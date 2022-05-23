@@ -5,18 +5,17 @@ import {
   InfoWindow,
   Marker,
 } from "@react-google-maps/api";
+import Container from "@mui/material/Container";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 
-
-
 const containerStyle = {
-  height: "100vh",
+  height: "60vh",
   width: "100%",
 };
 
 const center = {
-  lat: 35.69575,
-  lng: 139.77521,
+  lat: 35.62551386235291,
+  lng: 139.77614366422262,
 };
 
 const positionAkiba = {
@@ -43,6 +42,7 @@ function Map() {
     return setSize(new window.google.maps.Size(0, -45));
   };
   return (
+    <Container sx={{ py: 4 }} maxWidth="md">
     <LoadScript googleMapsApiKey="AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg" onLoad={() => createOffsetSize()}>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={17}>
         <Marker position={positionAkiba} />
@@ -59,6 +59,7 @@ function Map() {
         </InfoWindow> */}
       </GoogleMap>
     </LoadScript>
+    </Container>
   );
 };
 

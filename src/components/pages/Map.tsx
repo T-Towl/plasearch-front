@@ -12,11 +12,6 @@ const containerStyle = {
   width: "100%",
 };
 
-// const center = {
-//   lat: 35.62551386235291,
-//   lng: 139.77614366422262,
-// };
-
 /* エラーテキスト */
 const ErrorText = () => (
   <p className="App-error-text">geolocation IS NOT available</p>

@@ -33,15 +33,18 @@ function Home() {
         >
           ‐プラサーチ‐
         </Typography>
-        <Typography
-          variant="h5"
-          align="center"
-          color="text.secondary"
+        <Typography 
+          variant="p"
+          align="center" 
+          color="text.secondary" 
           paragraph
         >
-          Something short and leading about the collection below—its contents,
-          the creator, etc. Make it short and sweet, but not too short so folks
-          don&apos;t simply skip over it entirely.
+          西暦2022年。人類が、ガンプラを作るようになって、すでに半世紀。
+          ガンプラ愛から最も遠いところにいる転売ヤー達は、「ガンプラお譲りします」を名乗りガンプラファンに転売戦争を挑んできた。
+          数ヶ月余りの戦いで転売ヤーとガンプラファンは、総ガンプラの半分を死に至らしめ、ガンプラファン劣勢のまま戦争は膠着状態に陥る…
+          <br />
+          <br />
+          その戦禍の中、一つサイトが立ち上がった
         </Typography>
         <Stack
           sx={{ pt: 4 }}

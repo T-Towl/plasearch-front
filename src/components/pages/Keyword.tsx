@@ -17,6 +17,8 @@ function Keyword() {
   type shops = {
     id: number;
     name: string;
+    lat: number;
+    lng: number;
   };
 
   useEffect(() => {
@@ -51,8 +53,10 @@ function Keyword() {
                   {shop.name}
                 </Typography>
                 <Typography>
-                  This is a media card. You can use this section to describe the
-                  content.
+                  latitude: {shop.lat}
+                </Typography>
+                <Typography>
+                  longitude: {shop.lng}
                 </Typography>
               </CardContent>
               <CardActions>

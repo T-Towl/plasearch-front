@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import {
   GoogleMap,
   LoadScript,
@@ -17,19 +18,9 @@ const ErrorText = () => (
   <p className="App-error-text">geolocation IS NOT available</p>
 );
 
-// const center = {
-//   lat: 35.62551386235291,
-//   lng: 139.77614366422262,
-// };
-
 // const positionTokyo = {
 //   lat: 35.62551386235291,
 //   lng: 139.77614366422262
-// };
-
-// const positionYokohama = {
-//   lat: 35.44670550526705,
-//   lng: 139.65406751562722
 // };
 
 const divStyle = {
@@ -38,6 +29,27 @@ const divStyle = {
 };
 
 function Map() {
+  // <座標取得 未実装>
+  const [shops, setShops] = useState([]);
+  type shops = {
+    id: number;
+    name: string;
+    lat: number;
+    lng: number;
+    address :string
+    opening_hours :number
+    photo_reference :string
+    rating :number
+  };
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/api/v1/shops')
+         .then(res => {setShops(res.data)})
+         .catch(error => console.log(error))
+  },[]);
+  // </座標取得 未実装>
+
+  // <infoWindowオプション-->
   const [size, setSize] = useState<undefined | google.maps.Size>(undefined);
   const infoWindowOptions = {
     pixelOffset: size
@@ -45,7 +57,9 @@ function Map() {
   const createOffsetSize = () => {
     return setSize(new window.google.maps.Size(0, -45));
   };
+  // </infoWindowオプション-->
 
+  // <現在地取得機能-->
   const [isAvailable, setAvailable] = useState(false);
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
 
@@ -74,7 +88,7 @@ function Map() {
 
   // useEffect実行前であれば、"Loading..."という呼び出しを表示させます
   if (isFirstRef.current) return <div className="App">Loading...</div>;
-
+  // </現在地取得機能-->
 
   return (
     <Container sx={{ py: 4 }} maxWidth="md">
@@ -85,15 +99,9 @@ function Map() {
         {!isFirstRef && !isAvailable && <ErrorText />}
         <GoogleMap mapContainerStyle={containerStyle} center={position} zoom={13}>
           {/* <Marker position={positionTokyo} /> */}
-          {/* <Marker position={positionYokohama} /> */}
           {/* <InfoWindow position={positionTokyo} options={infoWindowOptions}>
             <div style={divStyle}>
               <h1>ガンダムベース東京</h1>
-            </div>
-          </InfoWindow> */}
-          {/* <InfoWindow position={positionYokohama} options={infoWindowOptions}>
-            <div style={divStyle}>
-              <h1>GUNDAM FACTORY YOKOHAMA</h1>
             </div>
           </InfoWindow> */}
         </GoogleMap>

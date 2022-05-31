@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./PageStyles.scss";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -19,6 +20,10 @@ function Keyword() {
     name: string;
     lat: number;
     lng: number;
+    address :string
+    opening_hours :number
+    photo_reference :string
+    rating :number
   };
 
   useEffect(() => {
@@ -42,26 +47,24 @@ function Keyword() {
               <CardMedia
                 component="img"
                 sx={{
-                  // 16:9
-                  pt: "56.25%"
+                  pt: "10%"
                 }}
-                image="https://source.unsplash.com/random"
-                alt="random"
+                image={shop.photo_reference}
+                alt="image"
               />
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {shop.name}
-                </Typography>
-                <Typography>
-                  latitude: {shop.lat}
-                </Typography>
-                <Typography>
-                  longitude: {shop.lng}
+                  <p className="shopName">{shop.name}</p>
+                  <p className="shopAddress">{shop.address}</p>
+                  <p className="shopRating">Googleで☆{shop.rating}</p>
+                  {/* <p className="shopOpneHours">営業時間{shop.opening_hours}</p> */}
+                  {/* latitude: {shop.lat} */}
+                  {/* longitude: {shop.lng} */}
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">View</Button>
-                <Button size="small">Edit</Button>
+                <Button size="small">いいね！（実装中）</Button>
+                <Button size="small">口コミ（実装中）</Button>
               </CardActions>
             </Card>
           </Grid>

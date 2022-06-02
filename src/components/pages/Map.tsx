@@ -18,10 +18,15 @@ const ErrorText = () => (
   <p className="App-error-text">geolocation IS NOT available</p>
 );
 
-// const positionTokyo = {
-//   lat: 35.62551386235291,
-//   lng: 139.77614366422262
-// };
+const center = {
+  lat: 35.62551386235291,
+  lng: 139.77614366422262
+};
+
+const positionTokyo = {
+  lat: 35.62551386235291,
+  lng: 139.77614366422262
+};
 
 const divStyle = {
   background: "white",
@@ -30,23 +35,23 @@ const divStyle = {
 
 function Map() {
   // <座標取得 未実装>
-  const [shops, setShops] = useState([]);
-  type shops = {
-    id: number;
-    name: string;
-    lat: number;
-    lng: number;
-    address :string
-    opening_hours :number
-    photo_reference :string
-    rating :number
-  };
+  // const [shops, setShops] = useState([]);
+  // type shops = {
+  //   id: number;
+  //   name: string;
+  //   lat: number;
+  //   lng: number;
+  //   address :string
+  //   opening_hours :number
+  //   photo_reference :string
+  //   rating :number
+  // };
 
-  useEffect(() => {
-    axios.get('http://localhost:3001/api/v1/shops')
-         .then(res => {setShops(res.data)})
-         .catch(error => console.log(error))
-  },[]);
+  // useEffect(() => {
+  //   axios.get('http://localhost:3001/api/v1/shops')
+  //        .then(res => {setShops(res.data)})
+  //        .catch(error => console.log(error))
+  // },[]);
   // </座標取得 未実装>
 
   // <infoWindowオプション-->
@@ -97,13 +102,17 @@ function Map() {
         onLoad={() => createOffsetSize()}
       >
         {!isFirstRef && !isAvailable && <ErrorText />}
-        <GoogleMap mapContainerStyle={containerStyle} center={position} zoom={13}>
-          {/* <Marker position={positionTokyo} /> */}
-          {/* <InfoWindow position={positionTokyo} options={infoWindowOptions}>
+        <GoogleMap 
+          mapContainerStyle={containerStyle}  
+          center={position} 
+          zoom={13}
+        >
+          <Marker position={positionTokyo} />
+          <InfoWindow position={positionTokyo} options={infoWindowOptions}>
             <div style={divStyle}>
               <h1>ガンダムベース東京</h1>
             </div>
-          </InfoWindow> */}
+          </InfoWindow>
         </GoogleMap>
       </LoadScript>
     </Container>

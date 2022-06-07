@@ -18,15 +18,15 @@ const ErrorText = () => (
   <p className="App-error-text">geolocation IS NOT available</p>
 );
 
-const center = {
-  lat: 35.62551386235291,
-  lng: 139.77614366422262
-};
+// const center = {
+//   lat: 35.62551386235291,
+//   lng: 139.77614366422262
+// };
 
-const positionTokyo = {
-  lat: 35.62551386235291,
-  lng: 139.77614366422262
-};
+// const positionTokyo = {
+//   lat: 35.62551386235291,
+//   lng: 139.77614366422262
+// };
 
 const divStyle = {
   background: "white",
@@ -34,6 +34,37 @@ const divStyle = {
 };
 
 function Map() {
+// <現在地取得機能-->
+const [isAvailable, setAvailable] = useState(false);
+const [position, setPosition] = useState({ lat: 0, lng: 0 });
+
+// useEffectが実行されているかどうかを判定するために用意しています
+const isFirstRef = useRef(true);
+
+/*
+* ページ描画時にGeolocation APIが使えるかどうかをチェックしています
+* もし使えなければその旨のエラーメッセージを表示させます
+*/
+useEffect(() => {
+  isFirstRef.current = false;
+  if ('geolocation' in navigator) {
+    setAvailable(true);
+  }
+  getCurrentPosition();
+}, [isAvailable]);
+
+const getCurrentPosition = () => {
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      setPosition({ lat: position.coords.latitude, lng: position.coords.longitude});
+    }
+  );
+};
+
+// useEffect実行前であれば、"Loading..."という呼び出しを表示させます
+if (isFirstRef.current) return <div className="App">Loading...</div>;
+// </現在地取得機能-->
+
   // <座標取得 未実装>
   // const [shops, setShops] = useState([]);
   // type shops = {
@@ -54,6 +85,28 @@ function Map() {
   // },[]);
   // </座標取得 未実装>
 
+  // <表示範囲判定>
+  // const [selected, setSelected] = useState(null);
+  const [bounds, setBounds] = useState({ lat: 0, lng: 0 });
+
+  const mapRef = React.useRef();
+
+  const onMapLoad = React.useCallback((map) => {
+    mapRef.current = map;
+  }, []);
+
+  const onMapBoundsChanged = React.useCallback(() => {
+    const latlngchange = mapRef.current.getBounds();
+    const lat: number = latlngchange.Ua.h;
+    const lng: number = latlngchange.Ua.j;
+    const mapBounds = {
+      lat: lat,
+      lng: lng
+    };
+    setBounds(mapBounds);
+  }, []);
+  // </表示範囲判定>
+
   // <infoWindowオプション-->
   const [size, setSize] = useState<undefined | google.maps.Size>(undefined);
   const infoWindowOptions = {
@@ -63,37 +116,6 @@ function Map() {
     return setSize(new window.google.maps.Size(0, -45));
   };
   // </infoWindowオプション-->
-
-  // <現在地取得機能-->
-  const [isAvailable, setAvailable] = useState(false);
-  const [position, setPosition] = useState({ lat: 0, lng: 0 });
-
-  // useEffectが実行されているかどうかを判定するために用意しています
-  const isFirstRef = useRef(true);
-
-  /*
-  * ページ描画時にGeolocation APIが使えるかどうかをチェックしています
-  * もし使えなければその旨のエラーメッセージを表示させます
-  */
-  useEffect(() => {
-    isFirstRef.current = false;
-    if ('geolocation' in navigator) {
-      setAvailable(true);
-    }
-    getCurrentPosition();
-  }, [isAvailable]);
-
-  const getCurrentPosition = () => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        setPosition({ lat: position.coords.latitude, lng: position.coords.longitude});
-      }
-    );
-  };
-
-  // useEffect実行前であれば、"Loading..."という呼び出しを表示させます
-  if (isFirstRef.current) return <div className="App">Loading...</div>;
-  // </現在地取得機能-->
 
   return (
     <Container sx={{ py: 4 }} maxWidth="md">
@@ -105,14 +127,16 @@ function Map() {
         <GoogleMap 
           mapContainerStyle={containerStyle}  
           center={position} 
+          onLoad={onMapLoad}
+          onBoundsChanged={onMapBoundsChanged}
           zoom={13}
         >
-          <Marker position={positionTokyo} />
+          {/* <Marker position={positionTokyo} />
           <InfoWindow position={positionTokyo} options={infoWindowOptions}>
             <div style={divStyle}>
               <h1>ガンダムベース東京</h1>
             </div>
-          </InfoWindow>
+          </InfoWindow> */}
         </GoogleMap>
       </LoadScript>
     </Container>

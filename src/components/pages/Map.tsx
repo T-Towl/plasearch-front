@@ -89,9 +89,9 @@ if (isFirstRef.current) return <div className="App">Loading...</div>;
   // const [selected, setSelected] = useState(null);
   const [bounds, setBounds] = useState({ lat: 0, lng: 0 });
 
-  const mapRef = React.useRef();
+  const mapRef = React.useRef<google.maps.Map | undefined>();
 
-  const onMapLoad = React.useCallback((map) => {
+  const onMapLoad = React.useCallback((map: google.maps.Map) => {
     mapRef.current = map;
   }, []);
 

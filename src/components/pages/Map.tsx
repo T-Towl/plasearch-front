@@ -34,36 +34,36 @@ const divStyle = {
 };
 
 function Map() {
-// <現在地取得機能-->
-const [isAvailable, setAvailable] = useState(false);
-const [position, setPosition] = useState({ lat: 0, lng: 0 });
+  // <現在地取得機能-->
+  const [isAvailable, setAvailable] = useState(false);
+  const [position, setPosition] = useState({ lat: 0, lng: 0 });
 
-// useEffectが実行されているかどうかを判定するために用意しています
-const isFirstRef = useRef(true);
+  // useEffectが実行されているかどうかを判定するために用意しています
+    const isFirstRef = useRef(true);
 
-/*
-* ページ描画時にGeolocation APIが使えるかどうかをチェックしています
-* もし使えなければその旨のエラーメッセージを表示させます
-*/
-useEffect(() => {
-  isFirstRef.current = false;
-  if ('geolocation' in navigator) {
-    setAvailable(true);
-  }
-  getCurrentPosition();
-}, [isAvailable]);
-
-const getCurrentPosition = () => {
-  navigator.geolocation.getCurrentPosition(
-    position => {
-      setPosition({ lat: position.coords.latitude, lng: position.coords.longitude});
+  /*
+  * ページ描画時にGeolocation APIが使えるかどうかをチェックしています
+  * もし使えなければその旨のエラーメッセージを表示させます
+  */
+  useEffect(() => {
+    isFirstRef.current = false;
+    if ('geolocation' in navigator) {
+      setAvailable(true);
     }
-  );
-};
+    getCurrentPosition();
+  }, [isAvailable]);
 
-// useEffect実行前であれば、"Loading..."という呼び出しを表示させます
-if (isFirstRef.current) return <div className="App">Loading...</div>;
-// </現在地取得機能-->
+  const getCurrentPosition = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        setPosition({ lat: position.coords.latitude, lng: position.coords.longitude});
+      }
+    );
+  };
+
+  // useEffect実行前であれば、"Loading..."という呼び出しを表示させます
+  if (isFirstRef.current) return <div className="App">Loading...</div>;
+  // </現在地取得機能-->
 
   // <座標取得 未実装>
   // const [shops, setShops] = useState([]);
@@ -89,21 +89,23 @@ if (isFirstRef.current) return <div className="App">Loading...</div>;
   // const [selected, setSelected] = useState(null);
   const [bounds, setBounds] = useState({ lat: 0, lng: 0 });
 
-  const mapRef = React.useRef<google.maps.Map | undefined>();
+    const mapRef = React.useRef<google.maps.Map | undefined>();
 
   const onMapLoad = React.useCallback((map: google.maps.Map) => {
     mapRef.current = map;
   }, []);
 
   const onMapBoundsChanged = React.useCallback(() => {
-    const latlngchange = mapRef.current.getBounds();
-    const lat: number = latlngchange.Ua.h;
-    const lng: number = latlngchange.Ua.j;
-    const mapBounds = {
-      lat: lat,
-      lng: lng
-    };
-    setBounds(mapBounds);
+    const latlngchange = mapRef?.current?.getBounds();
+    const ne = latlngchange?.getNorthEast();
+    const sw = latlngchange?.getSouthWest();
+    // const mapBounds = {
+    //   lat: lat,
+    //   lng: lng
+    // };
+    console.log(ne);
+    console.log(sw);
+    // setBounds(mapBounds);
   }, []);
   // </表示範囲判定>
 
@@ -139,6 +141,8 @@ if (isFirstRef.current) return <div className="App">Loading...</div>;
           </InfoWindow> */}
         </GoogleMap>
       </LoadScript>
+      {/* <p>{bounds.lat}</p>
+      <p>{bounds.lng}</p> */}
     </Container>
   );
 };

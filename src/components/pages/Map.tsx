@@ -34,6 +34,58 @@ const divStyle = {
 };
 
 function Map() {
+
+  // <座標取得 未実装>
+  // const [shops, setShops] = useState([]);
+  // type shops = {
+  //   id: number;
+  //   name: string;
+  //   lat: number;
+  //   lng: number;
+  //   address :string
+  //   opening_hours :number
+  //   photo_reference :string
+  //   rating :number
+  // };
+
+  // useEffect(() => {
+  //   axios.get('http://localhost:3001/api/v1/shops')
+  //        .then(res => {setShops(res.data)})
+  //        .catch(error => console.log(error))
+  // },[]);
+  // </座標取得 未実装>
+
+  // <infoWindowオプション-->
+  const [size, setSize] = useState<undefined | google.maps.Size>(undefined);
+  const infoWindowOptions = {
+    pixelOffset: size
+  };
+  const createOffsetSize = () => {
+    return setSize(new window.google.maps.Size(0, -45));
+  };
+  // </infoWindowオプション-->
+
+  // <表示範囲判定>
+  const [neBounds, setNeBounds] = useState({lat: 0,lng: 0});
+  const [swBounds, setSwBounds] = useState({lat: 0,lng: 0});
+
+  const mapRef = React.useRef<google.maps.Map | undefined>();
+
+  const onMapLoad = React.useCallback((map: google.maps.Map) => {
+    mapRef.current = map;
+  }, []);
+
+  const onMapBoundsChanged = React.useCallback(() => {
+    const neLatlng = mapRef?.current?.getBounds()?.getNorthEast();
+    const swLatlng = mapRef?.current?.getBounds()?.getSouthWest();
+    setNeBounds({lat: neLatlng?.lat(), lng: neLatlng?.lng()});
+    setSwBounds({lat: swLatlng?.lat(), lng: swLatlng?.lng()});
+
+    console.log(neBounds?.lat, neBounds?.lng);
+    console.log(swBounds?.lat, swBounds?.lat);
+  }, []);
+  // </表示範囲判定>
+
   // <現在地取得機能-->
   const [isAvailable, setAvailable] = useState(false);
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
@@ -65,60 +117,6 @@ function Map() {
   if (isFirstRef.current) return <div className="App">Loading...</div>;
   // </現在地取得機能-->
 
-  // <座標取得 未実装>
-  // const [shops, setShops] = useState([]);
-  // type shops = {
-  //   id: number;
-  //   name: string;
-  //   lat: number;
-  //   lng: number;
-  //   address :string
-  //   opening_hours :number
-  //   photo_reference :string
-  //   rating :number
-  // };
-
-  // useEffect(() => {
-  //   axios.get('http://localhost:3001/api/v1/shops')
-  //        .then(res => {setShops(res.data)})
-  //        .catch(error => console.log(error))
-  // },[]);
-  // </座標取得 未実装>
-
-  // <表示範囲判定>
-  // const [selected, setSelected] = useState(null);
-  const [bounds, setBounds] = useState({ lat: 0, lng: 0 });
-
-    const mapRef = React.useRef<google.maps.Map | undefined>();
-
-  const onMapLoad = React.useCallback((map: google.maps.Map) => {
-    mapRef.current = map;
-  }, []);
-
-  const onMapBoundsChanged = React.useCallback(() => {
-    const latlngchange = mapRef?.current?.getBounds();
-    const ne = latlngchange?.getNorthEast();
-    const sw = latlngchange?.getSouthWest();
-    // const mapBounds = {
-    //   lat: lat,
-    //   lng: lng
-    // };
-    console.log(ne);
-    console.log(sw);
-    // setBounds(mapBounds);
-  }, []);
-  // </表示範囲判定>
-
-  // <infoWindowオプション-->
-  const [size, setSize] = useState<undefined | google.maps.Size>(undefined);
-  const infoWindowOptions = {
-    pixelOffset: size
-  };
-  const createOffsetSize = () => {
-    return setSize(new window.google.maps.Size(0, -45));
-  };
-  // </infoWindowオプション-->
-
   return (
     <Container sx={{ py: 4 }} maxWidth="md">
       <LoadScript
@@ -141,8 +139,8 @@ function Map() {
           </InfoWindow> */}
         </GoogleMap>
       </LoadScript>
-      {/* <p>{bounds.lat}</p>
-      <p>{bounds.lng}</p> */}
+      <p>{}</p>
+      <p>{}</p>
     </Container>
   );
 };

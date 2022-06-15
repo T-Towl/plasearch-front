@@ -76,10 +76,16 @@ function Map() {
   }, []);
 
   const onMapBoundsChanged = React.useCallback(() => {
+    //↓表示範囲の北東・南西の座標を取得
     const neLatlng = mapRef?.current?.getBounds()?.getNorthEast();
     const swLatlng = mapRef?.current?.getBounds()?.getSouthWest();
-    setNeBounds({lat: neLatlng?.lat(), lng: neLatlng?.lng()});
-    setSwBounds({lat: swLatlng?.lat(), lng: swLatlng?.lng()});
+    //取得した座標をセット
+    if (neLatlng?.lat() && neLatlng?.lng()) {
+      setNeBounds({lat: neLatlng?.lat(), lng: neLatlng?.lng()});
+    }
+    if (swLatlng?.lat() && swLatlng?.lng()) {
+      setSwBounds({lat: swLatlng?.lat(), lng: swLatlng?.lng()});
+    }
 
     console.log(neBounds?.lat, neBounds?.lng);
     console.log(swBounds?.lat, swBounds?.lat);
@@ -139,8 +145,8 @@ function Map() {
           </InfoWindow> */}
         </GoogleMap>
       </LoadScript>
-      <p>{}</p>
-      <p>{}</p>
+      <p>{neBounds.lat} {neBounds.lng}</p>
+      <p>{swBounds.lat} {swBounds.lng}</p>
     </Container>
   );
 };

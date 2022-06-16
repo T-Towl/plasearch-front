@@ -35,26 +35,6 @@ const divStyle = {
 
 function Map() {
 
-  // <座標取得 未実装>
-  // const [shops, setShops] = useState([]);
-  // type shops = {
-  //   id: number;
-  //   name: string;
-  //   lat: number;
-  //   lng: number;
-  //   address :string
-  //   opening_hours :number
-  //   photo_reference :string
-  //   rating :number
-  // };
-
-  // useEffect(() => {
-  //   axios.get('http://localhost:3001/api/v1/shops')
-  //        .then(res => {setShops(res.data)})
-  //        .catch(error => console.log(error))
-  // },[]);
-  // </座標取得 未実装>
-
   // <infoWindowオプション-->
   const [size, setSize] = useState<undefined | google.maps.Size>(undefined);
   const infoWindowOptions = {
@@ -76,10 +56,10 @@ function Map() {
   }, []);
 
   const onMapBoundsChanged = React.useCallback(() => {
-    //↓表示範囲の北東・南西の座標を取得
+  //↓表示範囲の北東・南西の座標を取得
     const neLatlng = mapRef?.current?.getBounds()?.getNorthEast();
     const swLatlng = mapRef?.current?.getBounds()?.getSouthWest();
-    //取得した座標をセット
+  //取得した座標をセット
     if (neLatlng?.lat() && neLatlng?.lng()) {
       setNeBounds({lat: neLatlng?.lat(), lng: neLatlng?.lng()});
     }
@@ -91,6 +71,27 @@ function Map() {
     console.log(swBounds?.lat, swBounds?.lat);
   }, []);
   // </表示範囲判定>
+
+  // <座標取得 未実装>
+  const [shops, setShops] = useState([]);
+  type shops = {
+    id: number;
+    name: string;
+    lat: number;
+    lng: number;
+    address :string
+    opening_hours :number
+    photo_reference :string
+    rating :number
+  };
+
+  useEffect(() => {
+  axios.get(
+    'http://localhost:3001/api/v1/shops/?minlat='+swBounds?.lat+'&minlng='+swBounds?.lng+'&maxlat='+neBounds?.lat+'&maxlng='+neBounds?.lng)
+    .then(res => {setShops(res.data)})
+    .catch(error => console.log(error))
+  },[]);
+  // </座標取得 未実装>
 
   // <現在地取得機能-->
   const [isAvailable, setAvailable] = useState(false);

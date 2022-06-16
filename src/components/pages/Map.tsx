@@ -18,15 +18,15 @@ const ErrorText = () => (
   <p className="App-error-text">geolocation IS NOT available</p>
 );
 
-const center = {
-  lat: 35.62551386235291,
-  lng: 139.77614366422262
-};
+// const center = {
+//   lat: 35.62551386235291,
+//   lng: 139.77614366422262
+// };
 
-const positionTokyo = {
-  lat: 35.62551386235291,
-  lng: 139.77614366422262
-};
+// const positionTokyo = {
+//   lat: 35.62551386235291,
+//   lng: 139.77614366422262
+// };
 
 const divStyle = {
   background: "white",
@@ -34,6 +34,7 @@ const divStyle = {
 };
 
 function Map() {
+
   // <座標取得 未実装>
   // const [shops, setShops] = useState([]);
   // type shops = {
@@ -64,12 +65,39 @@ function Map() {
   };
   // </infoWindowオプション-->
 
+  // <表示範囲判定>
+  const [neBounds, setNeBounds] = useState({lat: 0,lng: 0});
+  const [swBounds, setSwBounds] = useState({lat: 0,lng: 0});
+
+  const mapRef = React.useRef<google.maps.Map | undefined>();
+
+  const onMapLoad = React.useCallback((map: google.maps.Map) => {
+    mapRef.current = map;
+  }, []);
+
+  const onMapBoundsChanged = React.useCallback(() => {
+    //↓表示範囲の北東・南西の座標を取得
+    const neLatlng = mapRef?.current?.getBounds()?.getNorthEast();
+    const swLatlng = mapRef?.current?.getBounds()?.getSouthWest();
+    //取得した座標をセット
+    if (neLatlng?.lat() && neLatlng?.lng()) {
+      setNeBounds({lat: neLatlng?.lat(), lng: neLatlng?.lng()});
+    }
+    if (swLatlng?.lat() && swLatlng?.lng()) {
+      setSwBounds({lat: swLatlng?.lat(), lng: swLatlng?.lng()});
+    }
+
+    console.log(neBounds?.lat, neBounds?.lng);
+    console.log(swBounds?.lat, swBounds?.lat);
+  }, []);
+  // </表示範囲判定>
+
   // <現在地取得機能-->
   const [isAvailable, setAvailable] = useState(false);
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
 
   // useEffectが実行されているかどうかを判定するために用意しています
-  const isFirstRef = useRef(true);
+    const isFirstRef = useRef(true);
 
   /*
   * ページ描画時にGeolocation APIが使えるかどうかをチェックしています
@@ -105,16 +133,20 @@ function Map() {
         <GoogleMap 
           mapContainerStyle={containerStyle}  
           center={position} 
+          onLoad={onMapLoad}
+          onBoundsChanged={onMapBoundsChanged}
           zoom={13}
         >
-          <Marker position={positionTokyo} />
+          {/* <Marker position={positionTokyo} />
           <InfoWindow position={positionTokyo} options={infoWindowOptions}>
             <div style={divStyle}>
               <h1>ガンダムベース東京</h1>
             </div>
-          </InfoWindow>
+          </InfoWindow> */}
         </GoogleMap>
       </LoadScript>
+      <p>{neBounds.lat} {neBounds.lng}</p>
+      <p>{swBounds.lat} {swBounds.lng}</p>
     </Container>
   );
 };

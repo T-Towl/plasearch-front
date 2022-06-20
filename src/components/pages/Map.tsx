@@ -88,12 +88,14 @@ function Map() {
     rating :number
   };
 
+  // ↓Railsから表示範囲内のデータを取得
   useEffect(() => {
   axios.get(
     'http://localhost:3001/api/v1/shops/?minlat='+swBounds?.lat+'&minlng='+swBounds?.lng+'&maxlat='+neBounds?.lat+'&maxlng='+neBounds?.lng)
     .then(res => {setShops(res.data)})
     .catch(error => console.log(error))
-  },[neBounds, swBounds]);
+  },[shops]);
+
   // </座標データ取得 未実装>
 
   // <現在地取得機能-->
@@ -144,12 +146,14 @@ function Map() {
           
           {/* Railsから取得したデータを、Marker地図上に表示 */}
           {shops.map((shop: shops) => (
-            <Marker position={shop} />
-            <InfoWindow position={shop} options={infoWindowOptions}>
-              <div style={divStyle}>
-              <h1>position</h1>
-              </div>
-            </InfoWindow>
+            <div>
+              <Marker position={shop} />
+              <InfoWindow position={shop} options={infoWindowOptions}>
+                <div style={divStyle}>
+                  <h1>{shop.name}</h1>
+                </div>
+              </InfoWindow>
+            </div>
           ))}
 
         </GoogleMap>

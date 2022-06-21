@@ -57,9 +57,6 @@ function Map() {
     if (swLatlng?.lat() && swLatlng?.lng()) {
       setSwBounds({lat: swLatlng?.lat(), lng: swLatlng?.lng()});
     }
-
-    console.log(neBounds?.lat, neBounds?.lng);
-    console.log(swBounds?.lat, swBounds?.lat);
   }, []);
   // </表示範囲判定>
 
@@ -76,8 +73,8 @@ function Map() {
   // </infoWindowオプション-->
 
   // <座標データ取得 未実装>
-  const [shops, setShops] = useState([]);
-  type shops = {
+  const [shops, setShops] = useState<Shop[]>([]);
+  type Shop = {
     id: number;
     name: string;
     lat: number;
@@ -145,7 +142,7 @@ function Map() {
         >
           
           {/* Railsから取得したデータを、Marker地図上に表示 */}
-          {shops.map((shop: shops) => (
+          {shops.map((shop) => (
             <div>
               <Marker position={shop} />
               <InfoWindow position={shop} options={infoWindowOptions}>
@@ -158,6 +155,8 @@ function Map() {
 
         </GoogleMap>
       </LoadScript>
+      <p>{neBounds?.lat} : {neBounds?.lng}</p>
+      <p>{swBounds?.lat} : {swBounds?.lng}</p>
     </Container>
   );
 };

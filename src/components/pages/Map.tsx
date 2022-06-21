@@ -91,7 +91,7 @@ function Map() {
     'http://localhost:3001/api/v1/shops/?minlat='+swBounds?.lat+'&minlng='+swBounds?.lng+'&maxlat='+neBounds?.lat+'&maxlng='+neBounds?.lng)
     .then(res => {setShops(res.data)})
     .catch(error => console.log(error))
-  },[shops]);
+  },[]);
 
   // </座標データ取得 未実装>
 
@@ -142,15 +142,21 @@ function Map() {
         >
           
           {/* Railsから取得したデータを、Marker地図上に表示 */}
-          {shops.map((shop) => (
-            <div>
-              <Marker position={shop} />
+          {shops.map((shop, index) => (
+            <>
+              {/* <Marker position={shop} />
               <InfoWindow position={shop} options={infoWindowOptions}>
                 <div style={divStyle}>
                   <h1>{shop.name}</h1>
                 </div>
+              </InfoWindow> */}
+              <Marker position={{ lat: 35 + index, lng: 139 + index }} key={`marker-${index}`} />
+              <InfoWindow position={{ lat: 35 + index, lng: 139 + index }} options={infoWindowOptions} key={`info-${index}`}>
+                <div style={divStyle}>
+                  <h1>{shop.name}</h1>
+                </div>
               </InfoWindow>
-            </div>
+            </>
           ))}
 
         </GoogleMap>

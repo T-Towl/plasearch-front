@@ -57,9 +57,9 @@ function Keyword() {
                   <p className="shopName">{shop.name}</p>
                   <p className="shopAddress">{shop.address}</p>
                   <p className="shopRating">Googleで☆{shop.rating}</p>
-                  {/* <p className="shopOpneHours">営業時間{shop.opening_hours}</p> */}
-                  {/* latitude: {shop.lat} */}
-                  {/* longitude: {shop.lng} */}
+                  <p className="shopOpneHours">営業時間{shop.opening_hours}</p>
+                  latitude: {shop.lat}
+                  longitude: {shop.lng}
                 </Typography>
               </CardContent>
               <CardActions>

@@ -19,11 +19,6 @@ const ErrorText = () => (
   <p className="App-error-text">geolocation IS NOT available</p>
 );
 
-// const center = {
-//   lat: 35.62551386235291,
-//   lng: 139.77614366422262
-// };
-
 const positionTokyo = {
   lat: 35.62551386235291,
   lng: 139.77614366422262
@@ -72,29 +67,6 @@ function Map() {
   const [LatLng, setLatLng] = useState<google.maps.LatLng | google.maps.LatLngLiteral>();
   // </infoWindowオプション-->
 
-  // <座標データ取得 未実装>
-  const [shops, setShops] = useState<Shop[]>([]);
-  type Shop = {
-    id: number;
-    name: string;
-    lat: number;
-    lng: number;
-    address :string
-    opening_hours :number
-    photo_reference :string
-    rating :number
-  };
-
-  // ↓Railsから表示範囲内のデータを取得
-  useEffect(() => {
-  axios.get(
-    'http://localhost:3001/api/v1/shops/?minlat='+swBounds?.lat+'&minlng='+swBounds?.lng+'&maxlat='+neBounds?.lat+'&maxlng='+neBounds?.lng)
-    .then(res => {setShops(res.data)})
-    .catch(error => console.log(error))
-  },[]);
-
-  // </座標データ取得 未実装>
-
   // <現在地取得機能-->
   const [isAvailable, setAvailable] = useState(false);
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
@@ -121,10 +93,33 @@ function Map() {
       }
     );
   };
+  // </現在地取得機能-->
+
+  // <座標データ取得 未実装>
+  const [shops, setShops] = useState<Shop[]>([]);
+  type Shop = {
+    id: number;
+    name: string;
+    lat: number;
+    lng: number;
+    address :string
+    opening_hours :number
+    photo_reference :string
+    rating :number
+  };
+
+  // ↓Railsから表示範囲内のデータを取得
+  useEffect(() => {
+  axios.get(
+    'http://localhost:3001/api/v1/shops/?minlat=+swBounds?.lat+&minlng=+swBounds?.lng+&maxlat=+neBounds?.lat+&maxlng=+neBounds?.lng')
+    .then(res => {setShops(res.data)})
+    .catch(error => console.log(error))
+  },[]);
+
+  // </座標データ取得 未実装>
 
   // useEffect実行前であれば、"Loading..."という呼び出しを表示させます
   if (isFirstRef.current) return <div className="App">Loading...</div>;
-  // </現在地取得機能-->
 
   return (
     <Container sx={{ py: 4 }} maxWidth="md">
@@ -144,14 +139,15 @@ function Map() {
           {/* Railsから取得したデータを、Marker地図上に表示 */}
           {shops.map((shop, index) => (
             <>
-              {/* <Marker position={shop} />
-              <InfoWindow position={shop} options={infoWindowOptions}>
-                <div style={divStyle}>
-                  <h1>{shop.name}</h1>
-                </div>
-              </InfoWindow> */}
-              <Marker position={{ lat: 35 + index, lng: 139 + index }} key={`marker-${index}`} />
-              <InfoWindow position={{ lat: 35 + index, lng: 139 + index }} options={infoWindowOptions} key={`info-${index}`}>
+              <Marker 
+                position={{ lat: Number(shop.lat), lng: Number(shop.lng) }} 
+                key={`marker-${index}`} 
+              />
+              <InfoWindow 
+                position={{ lat: Number(shop.lat), lng: Number(shop.lng) }} 
+                options={infoWindowOptions} 
+                key={`info-${index}`}
+              >
                 <div style={divStyle}>
                   <h1>{shop.name}</h1>
                 </div>

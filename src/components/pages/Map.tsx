@@ -82,7 +82,6 @@ function Map() {
     rating :number
   };
 
-    const shopsData = useRef(shops);
   // useEffectが実行されているかどうかを判定するために用意しています
     const isFirstRef = useRef(true);
 
@@ -103,6 +102,8 @@ function Map() {
       .catch(error => console.log(error));
   }, [isAvailable]);
 
+  const shopsData = useRef();
+
   const getCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -114,16 +115,17 @@ function Map() {
 
   // <座標データ取得 未実装>
   const [nearbyShops, setNearbyShops] = useState<Shop[]>([]);
-  useEffect(() => {
-    const result = shopsData.current.filter(
-      (shopsData) =>
-        shopsData.lat < neBounds.lat &&
-        shopsData.lat > swBounds.lat &&
-        shopsData.lng < neBounds.lng &&
-        shopsData.lng > swBounds.lng
+  const searchNearbyShops = () => {
+    const result = shops.filter(
+      (shops) =>
+        shops.lat < neBounds.lat &&
+        shops.lat > swBounds.lat &&
+        shops.lng < neBounds.lng &&
+        shops.lng > swBounds.lng
     );
     setNearbyShops(result);
-  }, []);
+    console.log(shops);
+  };
 
   // </座標データ取得 未実装>
 
@@ -166,6 +168,7 @@ function Map() {
 
         </GoogleMap>
       </LoadScript>
+      <button onClick={searchNearbyShops}>周辺のお店を探す</button>
       <p>{neBounds?.lat} : {neBounds?.lng}</p>
       <p>{swBounds?.lat} : {swBounds?.lng}</p>
     </Container>

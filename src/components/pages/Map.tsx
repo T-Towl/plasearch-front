@@ -70,7 +70,19 @@ function Map() {
   // <現在地取得機能-->
   const [isAvailable, setAvailable] = useState(false);
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
+  const [shops, setShops] = useState<Shop[]>([]);
+  type Shop = {
+    id: number;
+    name: string;
+    lat: number;
+    lng: number;
+    address :string
+    opening_hours :number
+    photo_reference :string
+    rating :number
+  };
 
+    const shopsData = useRef(shops);
   // useEffectが実行されているかどうかを判定するために用意しています
     const isFirstRef = useRef(true);
 
@@ -84,6 +96,11 @@ function Map() {
       setAvailable(true);
     }
     getCurrentPosition();
+    // ↓Railsからデータを取得
+    axios.get(
+      'http://localhost:3001/api/v1/shops')
+      .then(res => {setShops(res.data)})
+      .catch(error => console.log(error));
   }, [isAvailable]);
 
   const getCurrentPosition = () => {
@@ -96,25 +113,17 @@ function Map() {
   // </現在地取得機能-->
 
   // <座標データ取得 未実装>
-  const [shops, setShops] = useState<Shop[]>([]);
-  type Shop = {
-    id: number;
-    name: string;
-    lat: number;
-    lng: number;
-    address :string
-    opening_hours :number
-    photo_reference :string
-    rating :number
-  };
-
-  // ↓Railsから表示範囲内のデータを取得
+  const [nearbyShops, setNearbyShops] = useState<Shop[]>([]);
   useEffect(() => {
-  axios.get(
-    'http://localhost:3001/api/v1/shops/?minlat=+swBounds?.lat+&minlng=+swBounds?.lng+&maxlat=+neBounds?.lat+&maxlng=+neBounds?.lng')
-    .then(res => {setShops(res.data)})
-    .catch(error => console.log(error))
-  },[]);
+    const result = shopsData.current.filter(
+      (shopsData) =>
+        shopsData.lat < neBounds.lat &&
+        shopsData.lat > swBounds.lat &&
+        shopsData.lng < neBounds.lng &&
+        shopsData.lng > swBounds.lng
+    );
+    setNearbyShops(result);
+  }, []);
 
   // </座標データ取得 未実装>
 
@@ -137,19 +146,19 @@ function Map() {
         >
           
           {/* Railsから取得したデータを、Marker地図上に表示 */}
-          {shops.map((shop, index) => (
+          {nearbyShops.map((nearbyShop, index) => (
             <>
               <Marker 
-                position={{ lat: Number(shop.lat), lng: Number(shop.lng) }} 
+                position={{ lat: Number(nearbyShop.lat), lng: Number(nearbyShop.lng) }} 
                 key={`marker-${index}`} 
               />
               <InfoWindow 
-                position={{ lat: Number(shop.lat), lng: Number(shop.lng) }} 
+                position={{ lat: Number(nearbyShop.lat), lng: Number(nearbyShop.lng) }} 
                 options={infoWindowOptions} 
                 key={`info-${index}`}
               >
                 <div style={divStyle}>
-                  <h1>{shop.name}</h1>
+                  <h1>{nearbyShop.name}</h1>
                 </div>
               </InfoWindow>
             </>

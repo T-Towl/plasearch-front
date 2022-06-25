@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./PageStyles.scss";
 import axios from "axios";
 import Button from "@mui/material/Button";
@@ -14,8 +14,9 @@ import { integerPropType } from "@mui/utils";
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 function Keyword() {
-  const [shops, setShops] = useState([]);
-  type shops = {
+  const [isAvailable, setAvailable] = useState(false);
+  const [shops, setShops] = useState<Shop[]>([]);
+  type Shop = {
     id: number;
     name: string;
     lat: number;
@@ -26,16 +27,26 @@ function Keyword() {
     rating :number
   };
 
+  // useEffectが実行されているかどうかを判定するために用意しています
+  const isFirstRef = useRef(true);
+  
+  /*
+  * ページ描画時にGeolocation APIが使えるかどうかをチェックしています
+  * もし使えなければその旨のエラーメッセージを表示させます
+  */
   useEffect(() => {
+    isFirstRef.current = false;
     axios.get('http://localhost:3001/api/v1/shops')
-         .then(res => {setShops(res.data)})
+         .then(res => {setShops(res.data)
+               console.log("Rails Api からデータを取得");
+              })
          .catch(error => console.log(error))
-  },[]);
+    },[isAvailable]);
 
   return (
     <Container sx={{ py: 8 }} maxWidth="md">
       <Grid container spacing={4}>
-        {shops.map((shop: shops) => (
+        {shops.map((shop) => (
           <Grid item key={shop.id} xs={12} sm={6} md={4}>
             <Card
               sx={{
@@ -57,9 +68,9 @@ function Keyword() {
                   <p className="shopName">{shop.name}</p>
                   <p className="shopAddress">{shop.address}</p>
                   <p className="shopRating">Googleで☆{shop.rating}</p>
-                  {/* <p className="shopOpneHours">営業時間{shop.opening_hours}</p> */}
-                  {/* latitude: {shop.lat} */}
-                  {/* longitude: {shop.lng} */}
+                  <p className="shopOpneHours">営業時間{shop.opening_hours}</p>
+                  latitude: {shop.lat}
+                  longitude: {shop.lng}
                 </Typography>
               </CardContent>
               <CardActions>

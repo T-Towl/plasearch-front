@@ -7,6 +7,7 @@ import {
   Marker,
 } from "@react-google-maps/api";
 import Container from "@mui/material/Container";
+import { Shop } from "@mui/icons-material";
 
 const containerStyle = {
   height: "60vh",
@@ -18,15 +19,10 @@ const ErrorText = () => (
   <p className="App-error-text">geolocation IS NOT available</p>
 );
 
-// const center = {
-//   lat: 35.62551386235291,
-//   lng: 139.77614366422262
-// };
-
-// const positionTokyo = {
-//   lat: 35.62551386235291,
-//   lng: 139.77614366422262
-// };
+const positionTokyo = {
+  lat: 35.62551386235291,
+  lng: 139.77614366422262
+};
 
 const divStyle = {
   background: "white",
@@ -34,26 +30,6 @@ const divStyle = {
 };
 
 function Map() {
-
-  // <座標取得 未実装>
-  // const [shops, setShops] = useState([]);
-  // type shops = {
-  //   id: number;
-  //   name: string;
-  //   lat: number;
-  //   lng: number;
-  //   address :string
-  //   opening_hours :number
-  //   photo_reference :string
-  //   rating :number
-  // };
-
-  // useEffect(() => {
-  //   axios.get('http://localhost:3001/api/v1/shops')
-  //        .then(res => {setShops(res.data)})
-  //        .catch(error => console.log(error))
-  // },[]);
-  // </座標取得 未実装>
 
   // <infoWindowオプション-->
   const [size, setSize] = useState<undefined | google.maps.Size>(undefined);
@@ -63,38 +39,24 @@ function Map() {
   const createOffsetSize = () => {
     return setSize(new window.google.maps.Size(0, -45));
   };
+
+  const [LatLng, setLatLng] = useState<google.maps.LatLng | google.maps.LatLngLiteral>();
   // </infoWindowオプション-->
-
-  // <表示範囲判定>
-  const [neBounds, setNeBounds] = useState({lat: 0,lng: 0});
-  const [swBounds, setSwBounds] = useState({lat: 0,lng: 0});
-
-  const mapRef = React.useRef<google.maps.Map | undefined>();
-
-  const onMapLoad = React.useCallback((map: google.maps.Map) => {
-    mapRef.current = map;
-  }, []);
-
-  const onMapBoundsChanged = React.useCallback(() => {
-    //↓表示範囲の北東・南西の座標を取得
-    const neLatlng = mapRef?.current?.getBounds()?.getNorthEast();
-    const swLatlng = mapRef?.current?.getBounds()?.getSouthWest();
-    //取得した座標をセット
-    if (neLatlng?.lat() && neLatlng?.lng()) {
-      setNeBounds({lat: neLatlng?.lat(), lng: neLatlng?.lng()});
-    }
-    if (swLatlng?.lat() && swLatlng?.lng()) {
-      setSwBounds({lat: swLatlng?.lat(), lng: swLatlng?.lng()});
-    }
-
-    console.log(neBounds?.lat, neBounds?.lng);
-    console.log(swBounds?.lat, swBounds?.lat);
-  }, []);
-  // </表示範囲判定>
 
   // <現在地取得機能-->
   const [isAvailable, setAvailable] = useState(false);
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
+  const [shops, setShops] = useState<Shop[]>([]);
+  type Shop = {
+    id: number;
+    name: string;
+    lat: number;
+    lng: number;
+    address :string
+    opening_hours :number
+    photo_reference :string
+    rating :number
+  };
 
   // useEffectが実行されているかどうかを判定するために用意しています
     const isFirstRef = useRef(true);
@@ -109,6 +71,11 @@ function Map() {
       setAvailable(true);
     }
     getCurrentPosition();
+    // ↓Railsからデータを取得
+    axios.get(
+      'http://localhost:3001/api/v1/shops')
+      .then(res => {setShops(res.data); console.log("Rails Api からデータを取得");})
+      .catch(error => console.log(error));
   }, [isAvailable]);
 
   const getCurrentPosition = () => {
@@ -118,10 +85,57 @@ function Map() {
       }
     );
   };
+  // </現在地取得機能-->
+
+  // <表示範囲判定>
+  const [neBounds, setNeBounds] = useState({lat: 0,lng: 0});
+  const [swBounds, setSwBounds] = useState({lat: 0,lng: 0});
+  const [centerBounds, setCenterBounds] = useState({ lat: 0, lng: 0 });
+
+  const mapRef = React.useRef<google.maps.Map | undefined>();
+
+  const onMapLoad = React.useCallback((map: google.maps.Map) => {
+    mapRef.current = map;
+  }, []);
+
+  const onMapBoundsChanged = React.useCallback(() => {
+  //↓表示範囲の北東・南西・中心の座標を取得
+    const neLatlng = mapRef?.current?.getBounds()?.getNorthEast();
+    const swLatlng = mapRef?.current?.getBounds()?.getSouthWest();
+    const centerLatlng = mapRef?.current?.getBounds()?.getCenter();
+
+  //取得した座標をセット
+    if (neLatlng?.lat() && neLatlng?.lng()) {
+      setNeBounds({lat: neLatlng?.lat(), lng: neLatlng?.lng()});
+    }
+    if (swLatlng?.lat() && swLatlng?.lng()) {
+      setSwBounds({lat: swLatlng?.lat(), lng: swLatlng?.lng()});
+    }
+    if (centerLatlng?.lat() && centerLatlng?.lng()) {
+      setCenterBounds({ lat: centerLatlng?.lat(), lng: centerLatlng?.lng() });
+    }
+    // コンソールに出力
+    console.log("座標を取得しました");
+  }, []);
+  // </表示範囲判定>
+
+  // <表示範囲の座標データ取得>
+  const [nearbyShops, setNearbyShops] = useState<Shop[]>([]);
+  const searchNearbyShops = () => {
+    const result = shops.filter(
+      (shops) =>
+        shops.lat < neBounds.lat &&
+        shops.lat > swBounds.lat &&
+        shops.lng < neBounds.lng &&
+        shops.lng > swBounds.lng
+    );
+    setNearbyShops(result);
+    console.log("表示範囲の座標データ取得");
+  };
+  // </表示範囲の座標データ取得>
 
   // useEffect実行前であれば、"Loading..."という呼び出しを表示させます
   if (isFirstRef.current) return <div className="App">Loading...</div>;
-  // </現在地取得機能-->
 
   return (
     <Container sx={{ py: 4 }} maxWidth="md">
@@ -137,16 +151,31 @@ function Map() {
           onBoundsChanged={onMapBoundsChanged}
           zoom={13}
         >
-          {/* <Marker position={positionTokyo} />
-          <InfoWindow position={positionTokyo} options={infoWindowOptions}>
-            <div style={divStyle}>
-              <h1>ガンダムベース東京</h1>
-            </div>
-          </InfoWindow> */}
+          <Marker position={centerBounds} />
+          {/* Railsから取得したデータを、Marker地図上に表示 */}
+          {nearbyShops.map((nearbyShop, index) => (
+            <>
+              <Marker 
+                position={{ lat: Number(nearbyShop.lat), lng: Number(nearbyShop.lng) }} 
+                key={`marker-${index}`} 
+              />
+              <InfoWindow 
+                position={{ lat: Number(nearbyShop.lat), lng: Number(nearbyShop.lng) }} 
+                options={infoWindowOptions} 
+                key={`info-${index}`}
+              >
+                <div style={divStyle}>
+                  <h1>{nearbyShop.name}</h1>
+                </div>
+              </InfoWindow>
+            </>
+          ))}
+
         </GoogleMap>
       </LoadScript>
-      <p>{neBounds.lat} {neBounds.lng}</p>
-      <p>{swBounds.lat} {swBounds.lng}</p>
+      <button onClick={searchNearbyShops}>周辺のお店を探す</button>
+      <p>{neBounds?.lat} : {neBounds?.lng}</p>
+      <p>{swBounds?.lat} : {swBounds?.lng}</p>
     </Container>
   );
 };

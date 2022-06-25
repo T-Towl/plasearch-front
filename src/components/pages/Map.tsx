@@ -31,30 +31,6 @@ const divStyle = {
 
 function Map() {
 
-  // <表示範囲判定>
-  const [neBounds, setNeBounds] = useState({lat: 0,lng: 0});
-  const [swBounds, setSwBounds] = useState({lat: 0,lng: 0});
-
-  const mapRef = React.useRef<google.maps.Map | undefined>();
-
-  const onMapLoad = React.useCallback((map: google.maps.Map) => {
-    mapRef.current = map;
-  }, []);
-
-  const onMapBoundsChanged = React.useCallback(() => {
-  //↓表示範囲の北東・南西の座標を取得
-    const neLatlng = mapRef?.current?.getBounds()?.getNorthEast();
-    const swLatlng = mapRef?.current?.getBounds()?.getSouthWest();
-  //取得した座標をセット
-    if (neLatlng?.lat() && neLatlng?.lng()) {
-      setNeBounds({lat: neLatlng?.lat(), lng: neLatlng?.lng()});
-    }
-    if (swLatlng?.lat() && swLatlng?.lng()) {
-      setSwBounds({lat: swLatlng?.lat(), lng: swLatlng?.lng()});
-    }
-  }, []);
-  // </表示範囲判定>
-
   // <infoWindowオプション-->
   const [size, setSize] = useState<undefined | google.maps.Size>(undefined);
   const infoWindowOptions = {
@@ -98,11 +74,9 @@ function Map() {
     // ↓Railsからデータを取得
     axios.get(
       'http://localhost:3001/api/v1/shops')
-      .then(res => {setShops(res.data)})
+      .then(res => {setShops(res.data); console.log("Rails Api からデータを取得");})
       .catch(error => console.log(error));
   }, [isAvailable]);
-
-  const shopsData = useRef();
 
   const getCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition(
@@ -113,7 +87,39 @@ function Map() {
   };
   // </現在地取得機能-->
 
-  // <座標データ取得 未実装>
+  // <表示範囲判定>
+  const [neBounds, setNeBounds] = useState({lat: 0,lng: 0});
+  const [swBounds, setSwBounds] = useState({lat: 0,lng: 0});
+  const [centerBounds, setCenterBounds] = useState({ lat: 0, lng: 0 });
+
+  const mapRef = React.useRef<google.maps.Map | undefined>();
+
+  const onMapLoad = React.useCallback((map: google.maps.Map) => {
+    mapRef.current = map;
+  }, []);
+
+  const onMapBoundsChanged = React.useCallback(() => {
+  //↓表示範囲の北東・南西・中心の座標を取得
+    const neLatlng = mapRef?.current?.getBounds()?.getNorthEast();
+    const swLatlng = mapRef?.current?.getBounds()?.getSouthWest();
+    const centerLatlng = mapRef?.current?.getBounds()?.getCenter();
+
+  //取得した座標をセット
+    if (neLatlng?.lat() && neLatlng?.lng()) {
+      setNeBounds({lat: neLatlng?.lat(), lng: neLatlng?.lng()});
+    }
+    if (swLatlng?.lat() && swLatlng?.lng()) {
+      setSwBounds({lat: swLatlng?.lat(), lng: swLatlng?.lng()});
+    }
+    if (centerLatlng?.lat() && centerLatlng?.lng()) {
+      setCenterBounds({ lat: centerLatlng?.lat(), lng: centerLatlng?.lng() });
+    }
+    // コンソールに出力
+    console.log("座標を取得しました");
+  }, []);
+  // </表示範囲判定>
+
+  // <表示範囲の座標データ取得>
   const [nearbyShops, setNearbyShops] = useState<Shop[]>([]);
   const searchNearbyShops = () => {
     const result = shops.filter(
@@ -124,10 +130,9 @@ function Map() {
         shops.lng > swBounds.lng
     );
     setNearbyShops(result);
-    console.log(shops);
+    console.log("表示範囲の座標データ取得");
   };
-
-  // </座標データ取得 未実装>
+  // </表示範囲の座標データ取得>
 
   // useEffect実行前であれば、"Loading..."という呼び出しを表示させます
   if (isFirstRef.current) return <div className="App">Loading...</div>;
@@ -146,7 +151,7 @@ function Map() {
           onBoundsChanged={onMapBoundsChanged}
           zoom={13}
         >
-          
+          <Marker position={centerBounds} />
           {/* Railsから取得したデータを、Marker地図上に表示 */}
           {nearbyShops.map((nearbyShop, index) => (
             <>

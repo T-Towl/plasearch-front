@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./PageStyles.scss";
 import axios from "axios";
 import Button from "@mui/material/Button";
@@ -14,6 +14,7 @@ import { integerPropType } from "@mui/utils";
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 function Keyword() {
+  const [isAvailable, setAvailable] = useState(false);
   const [shops, setShops] = useState<Shop[]>([]);
   type Shop = {
     id: number;
@@ -26,11 +27,21 @@ function Keyword() {
     rating :number
   };
 
+  // useEffectが実行されているかどうかを判定するために用意しています
+  const isFirstRef = useRef(true);
+  
+  /*
+  * ページ描画時にGeolocation APIが使えるかどうかをチェックしています
+  * もし使えなければその旨のエラーメッセージを表示させます
+  */
   useEffect(() => {
+    isFirstRef.current = false;
     axios.get('http://localhost:3001/api/v1/shops')
-         .then(res => {setShops(res.data)})
+         .then(res => {setShops(res.data)
+               console.log("Rails Api からデータを取得");
+              })
          .catch(error => console.log(error))
-  },[]);
+    },[isAvailable]);
 
   return (
     <Container sx={{ py: 8 }} maxWidth="md">

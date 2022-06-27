@@ -74,7 +74,7 @@ function Keyword() {
     }
 
     const result = shops.filter((shop) =>
-      searchKeywords.every((kw) => shop.name.toLowerCase().indexOf(kw) !== -1)
+      searchKeywords.every((kw) => (shop.name.toLowerCase().indexOf(kw) !== -1 || shop.address.toLowerCase().indexOf(kw) !== -1))
     );
 
     const noResult: Shop[] = [
@@ -85,7 +85,7 @@ function Keyword() {
         lng: 0,
         address: "",
         opening_hours: 0,
-        photo_reference: "noimage",
+        photo_reference: "https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage_%E3%83%92%E3%82%9A%E3%82%AF%E3%83%88-760x460.png",
         rating :0
       }
     ];

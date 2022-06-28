@@ -1,20 +1,47 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./PageStyles.scss";
 import axios from "axios";
-import Button from "@mui/material/Button";
+import { styled } from '@mui/material/styles';
+import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Grid from "@mui/material/Grid";
+import CardHeader from '@mui/material/CardHeader';
+import Collapse from '@mui/material/Collapse';
+import Button from '@mui/material/Button';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { integerPropType } from "@mui/utils";
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 function Keyword() {
+
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   // <Railsからデータ取得>
   const [isAvailable, setAvailable] = useState(false);
@@ -113,9 +140,8 @@ function Keyword() {
             </Button>
           </Grid>
         </Grid>
-      {/* </Container>
-
-      <Container sx={{ py: 8 }} maxWidth="md"> */}
+      </Container>
+      <Container sx={{ py: 8 }} maxWidth="md">
         <Grid container spacing={4}>
         {showLists &&
             filteredShops.map((shop, i) => (
@@ -127,6 +153,15 @@ function Keyword() {
                   flexDirection: "column"
                 }}
               >
+                <CardHeader
+                  action={
+                    <IconButton aria-label="settings">
+                      <MoreVertIcon />
+                    </IconButton>
+                  }
+                  title={shop.name}
+                  subheader={shop.address}
+                />
                 <CardMedia
                   component="img"
                   sx={{
@@ -136,19 +171,44 @@ function Keyword() {
                   alt="image"
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    <p className="shopName">{shop.name}</p>
-                    <p className="shopAddress">{shop.address}</p>
-                    <p className="shopRating">Googleで☆{shop.rating}</p>
-                    <p className="shopOpneHours">営業時間{shop.opening_hours}</p>
-                    latitude: {shop.lat}
-                    longitude: {shop.lng}
+                  <Typography paragraph component="h2">
+                    <br/>
+                    Googleで☆{shop.rating}
                   </Typography>
                 </CardContent>
-                <CardActions>
-                  <Button size="small">いいね！（実装中）</Button>
-                  <Button size="small">口コミ（実装中）</Button>
+                <CardActions disableSpacing>
+                  <IconButton aria-label="add to favorites">
+                    <FavoriteIcon />
+                  </IconButton>
+                  <IconButton aria-label="share">
+                    <ChatBubbleIcon />
+                  </IconButton>
+                  <ExpandMore
+                    expand={expanded}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                  >
+                    <ExpandMoreIcon />
+                  </ExpandMore>
                 </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                  <CardContent>
+                    <Typography paragraph>営業時間:</Typography>
+                    <Typography paragraph>
+                      {shop.opening_hours}
+                    </Typography>
+                    <Typography paragraph>
+                      H
+                    </Typography>
+                    <Typography paragraph>
+                      A                    
+                    </Typography>
+                    <Typography>
+                      S
+                    </Typography>
+                  </CardContent>
+                </Collapse>
               </Card>
             </Grid>
           ))}

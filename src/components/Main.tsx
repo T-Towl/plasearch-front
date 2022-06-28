@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
 import Keyword from "./pages/Keyword";
+import About from "./pages/About";
 import Error from "./pages/Error";
 
 function Main() {
@@ -12,6 +13,7 @@ function Main() {
         <Route index element={<Home />} />
         <Route path="/map" element={<Map />} />
         <Route path="/keyword" element={<Keyword />} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </main>

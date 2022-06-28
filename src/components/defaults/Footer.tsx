@@ -7,10 +7,10 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
+      {new Date().getFullYear()}{" "}
+      <Link color="inherit" href="">
+        Tsuji
+      </Link>
       {"."}
     </Typography>
   );
@@ -29,7 +29,7 @@ function Footer() {
           color="text.secondary"
           component="p"
         >
-          Something here to give the footer a purpose!
+          Let's build a Gunpla!!
         </Typography>
         <Copyright />
       </Box>

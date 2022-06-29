@@ -18,7 +18,22 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { integerPropType } from "@mui/utils";
+// import { integerPropType } from "@mui/utils";
+
+// var config = {
+//   method: "get",
+//   url:
+//     "https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=address_component&key=AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg",
+//   headers: {}
+// };
+
+// axios(config)
+//   .then(function (response) {
+//     console.log(JSON.stringify(response.data));
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   });
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -46,6 +61,8 @@ function Keyword() {
   // <Railsからデータ取得>
   const [isAvailable, setAvailable] = useState(false);
   const [shops, setShops] = useState<Shop[]>([]);
+  const [shopsDetails, setShopsDetails] = useState([]);
+
   type Shop = {
     id: number;
     name: string;
@@ -70,6 +87,11 @@ function Keyword() {
          .then(res => {setShops(res.data)
                console.log("Rails Api からデータを取得");
               })
+         .catch(error => console.log(error))
+    axios.get('https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJIy1S0_mJGGAR2d0UgvPKUPg&fields=name&key=AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg')
+         .then(res => {setShopsDetails(res.data)
+               console.log(res.data);
+             })
          .catch(error => console.log(error))
   },[isAvailable]);
   // </Railsからデータ取得>
@@ -124,6 +146,7 @@ function Keyword() {
 
   return (
     <>
+    <p>{shopsDetails}</p>
       <Container sx={{ py: 8 }} maxWidth="md">
         <Grid container spacing={0} direction="column" alignItems="center">
           <Grid item xs={3}>
@@ -194,19 +217,14 @@ function Keyword() {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                   <CardContent>
-                    <Typography paragraph>営業時間:</Typography>
-                    <Typography paragraph>
-                      {shop.opening_hours}
-                    </Typography>
-                    <Typography paragraph>
-                      H
-                    </Typography>
-                    <Typography paragraph>
-                      A                    
-                    </Typography>
-                    <Typography>
-                      S
-                    </Typography>
+                  <Typography paragraph></Typography>
+                      <Typography paragraph>{shop.address}</Typography>
+                      <Typography paragraph>
+                        営業時間:{shop.opening_hours}
+                      </Typography>
+                      <Typography paragraph>H</Typography>
+                      <Typography paragraph>A</Typography>
+                      <Typography>S</Typography>
                   </CardContent>
                 </Collapse>
               </Card>

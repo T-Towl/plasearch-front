@@ -19,11 +19,6 @@ const ErrorText = () => (
   <p className="App-error-text">geolocation IS NOT available</p>
 );
 
-const positionTokyo = {
-  lat: 35.62551386235291,
-  lng: 139.77614366422262
-};
-
 const divStyle = {
   background: "white",
   fontSize: 7.5

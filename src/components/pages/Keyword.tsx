@@ -52,6 +52,37 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 function Keyword() {
 
+  // const [value, setValue] = useState("");
+  // const [placeID, setPlaceID] = useState(null);
+
+  // const getPlaceDetails = (ref) => {
+  //   return new Promise(function (resolve, reject) {
+  //     let placesService = new window.google.maps.places.PlacesService(ref);
+  //     placesService.getDetails(
+  //       {
+  //         placeId: "ChIJIy1S0_mJGGAR2d0UgvPKUPg",
+  //         fields: ["name"]
+  //       },
+  //       (place) => {
+  //         resolve(place.name);
+  //       }
+  //     );
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   async function doStuff() {
+  //     let placesResponse = await getPlaceDetails(ref);
+  //     let myResponse = await yourAPICall(placesResponse);
+  //     setValue(placesResponse);
+  //   }
+  //   if (placeID !== null) {
+  //     doStuff();
+  //     console.log(value);
+  //   }
+  // }, [placeID]);
+
+
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -88,11 +119,11 @@ function Keyword() {
                console.log("Rails Api からデータを取得");
               })
          .catch(error => console.log(error))
-    axios.get('https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJIy1S0_mJGGAR2d0UgvPKUPg&fields=name&key=AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg')
-         .then(res => {setShopsDetails(res.data)
-               console.log(res.data);
-             })
-         .catch(error => console.log(error))
+    // axios.get('https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJIy1S0_mJGGAR2d0UgvPKUPg&fields=name&key=AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg')
+    //      .then(res => {setShopsDetails(res.data)
+    //            console.log(res.data);
+    //          })
+    //      .catch(error => console.log(error))
   },[isAvailable]);
   // </Railsからデータ取得>
 
@@ -146,7 +177,6 @@ function Keyword() {
 
   return (
     <>
-    <p>{shopsDetails}</p>
       <Container sx={{ py: 8 }} maxWidth="md">
         <Grid container spacing={0} direction="column" alignItems="center">
           <Grid item xs={3}>

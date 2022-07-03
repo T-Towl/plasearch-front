@@ -34,8 +34,6 @@ function Map() {
   const createOffsetSize = () => {
     return setSize(new window.google.maps.Size(0, -45));
   };
-
-  const [LatLng, setLatLng] = useState<google.maps.LatLng | google.maps.LatLngLiteral>();
   // </infoWindowオプション-->
 
   // <現在地取得機能-->

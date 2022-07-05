@@ -27,7 +27,7 @@ const divStyle = {
 function Map() {
 
   // <infoWindowオプション-->
-  const [size, setSize] = useState<undefined | google.maps.Size>(undefined);
+  const [size, setSize] = useState<undefined | google.maps.Size>();
   const infoWindowOptions = {
     pixelOffset: size
   };
@@ -35,6 +35,21 @@ function Map() {
     return setSize(new window.google.maps.Size(0, -45));
   };
   // </infoWindowオプション-->
+
+  const request = {
+    placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4',
+    fields: ['name']
+  };
+  const [service, setService] = useState<void | google.maps.places.PlacesService>();
+  const [shopData, setShopData] = useState();
+  function callback(place: any, status: any) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      setShopData(place.name);
+    }
+  }
+  // const createGetDetails = (map: google.maps.Map) => {
+    
+  // };
 
   // <現在地取得機能-->
   const [isAvailable, setAvailable] = useState(false);
@@ -89,6 +104,7 @@ function Map() {
 
   const onMapLoad = React.useCallback((map: google.maps.Map) => {
     mapRef.current = map;
+    setService(new google.maps.places.PlacesService(map).getDetails(request, callback));
   }, []);
 
   const onMapBoundsChanged = React.useCallback(() => {
@@ -169,6 +185,7 @@ function Map() {
       <button onClick={searchNearbyShops}>周辺のお店を探す</button>
       <p>{neBounds?.lat} : {neBounds?.lng}</p>
       <p>{swBounds?.lat} : {swBounds?.lng}</p>
+      <p>{shopData}</p>
     </Container>
   );
 };

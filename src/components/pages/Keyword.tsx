@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./PageStyles.scss";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import axios from "axios";
+
 import { styled } from '@mui/material/styles';
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
@@ -19,21 +21,6 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 // import { integerPropType } from "@mui/utils";
-
-// var config = {
-//   method: "get",
-//   url:
-//     "https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=address_component&key=AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg",
-//   headers: {}
-// };
-
-// axios(config)
-//   .then(function (response) {
-//     console.log(JSON.stringify(response.data));
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -92,17 +79,17 @@ function Keyword() {
   // <Railsからデータ取得>
   const [isAvailable, setAvailable] = useState(false);
   const [shops, setShops] = useState<Shop[]>([]);
-  const [shopsDetails, setShopsDetails] = useState([]);
 
   type Shop = {
     id: number;
     name: string;
     lat: number;
     lng: number;
-    address :string
-    opening_hours :number
-    photo_reference :string
-    rating :number
+    address: string;
+    opening_hours: number;
+    photo_reference: string;
+    rating: number;
+    place_id: string;
   };
 
   // useEffectが実行されているかどうかを判定するために用意しています
@@ -161,13 +148,38 @@ function Keyword() {
         address: "",
         opening_hours: 0,
         photo_reference: "https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage_%E3%83%92%E3%82%9A%E3%82%AF%E3%83%88-760x460.png",
-        rating :0
+        rating :0,
+        place_id :""
       }
     ];
 
     setFilteredShops(result.length ? result : noResult);
   };
   // </検索機能>
+
+
+  const [shopData, setShopData] = useState<any>([]);
+  type ShopData = {
+    name: string;
+    place_id: string;
+    // html_attributions: any;
+  };
+
+  const request = {
+    placeId: "ChIJIy1S0_mJGGAR2d0UgvPKUPg",
+    fields: ["name", "place_id"]
+  };
+
+  function callback(place: any, status: any) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      setShopData(place);
+      console.log(place);
+    }
+  }
+
+  const onMapLoad = useCallback((map: google.maps.Map) => {
+    new google.maps.places.PlacesService(map).getDetails(request, callback);
+  }, []);
 
 
   return (
@@ -201,6 +213,12 @@ function Keyword() {
                   flexDirection: "column"
                 }}
               >
+                <LoadScript
+                  googleMapsApiKey="AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg"
+                  libraries={["places"]}
+                >
+                  <GoogleMap onLoad={onMapLoad}></GoogleMap>
+                </LoadScript>
                 <CardHeader
                   action={
                     <IconButton aria-label="settings">
@@ -223,6 +241,9 @@ function Keyword() {
                     <br/>
                     Googleで☆{shop.rating}
                   </Typography>
+                  <p>{shopData?.name}</p>
+                  <p>{shopData.place_id}</p>
+                  <p>{shop.place_id}</p>
                 </CardContent>
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">

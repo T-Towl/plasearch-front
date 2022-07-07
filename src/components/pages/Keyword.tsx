@@ -39,37 +39,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 function Keyword() {
 
-  // const [value, setValue] = useState("");
-  // const [placeID, setPlaceID] = useState(null);
-
-  // const getPlaceDetails = (ref) => {
-  //   return new Promise(function (resolve, reject) {
-  //     let placesService = new window.google.maps.places.PlacesService(ref);
-  //     placesService.getDetails(
-  //       {
-  //         placeId: "ChIJIy1S0_mJGGAR2d0UgvPKUPg",
-  //         fields: ["name"]
-  //       },
-  //       (place) => {
-  //         resolve(place.name);
-  //       }
-  //     );
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   async function doStuff() {
-  //     let placesResponse = await getPlaceDetails(ref);
-  //     let myResponse = await yourAPICall(placesResponse);
-  //     setValue(placesResponse);
-  //   }
-  //   if (placeID !== null) {
-  //     doStuff();
-  //     console.log(value);
-  //   }
-  // }, [placeID]);
-
-
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -159,27 +128,47 @@ function Keyword() {
 
 
   const [shopData, setShopData] = useState<any>([]);
-  type ShopData = {
-    name: string;
-    place_id: string;
-    // html_attributions: any;
-  };
 
-  const request = {
-    placeId: "ChIJIy1S0_mJGGAR2d0UgvPKUPg",
-    fields: ["name", "place_id"]
-  };
+  const [request, setRequest] = useState({
+    placeId: "",
+    fields: [
+      "address_component",
+      "adr_address",
+      "business_status",
+      "business_status",
+      "formatted_address",
+      "geometry",
+      "icon",
+      "icon_mask_base_uri",
+      "icon_background_color",
+      "name",
+      // //
+      "permanently_closed",
+      "photo",
+      "place_id",
+      "plus_code",
+      "type",
+      "url",
+      // //
+      // "utc_offset",
+      "utc_offset_minutes",
+      "vicinity"
+    ]
+  });
 
   function callback(place: any, status: any) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      setShopData(place);
+      setShopData([...shopData, place]);
       console.log(place);
     }
   }
 
   const onMapLoad = useCallback((map: google.maps.Map) => {
-    new google.maps.places.PlacesService(map).getDetails(request, callback);
-  }, []);
+    // {shops.map((shop) => (
+    //   setRequest({placeId: {shop.place_id}})
+      new google.maps.places.PlacesService(map).getDetails(request, callback);
+    // ))}
+  }, [request]);
 
 
   return (
@@ -225,7 +214,7 @@ function Keyword() {
                       <MoreVertIcon />
                     </IconButton>
                   }
-                  title={shop.name}
+                  title={shopData?.name}
                   subheader={shop.address}
                 />
                 <CardMedia
@@ -241,9 +230,7 @@ function Keyword() {
                     <br/>
                     Googleで☆{shop.rating}
                   </Typography>
-                  <p>{shopData?.name}</p>
-                  <p>{shopData.place_id}</p>
-                  <p>{shop.place_id}</p>
+                  {/* {shopData.address_components[7].long_name} */}
                 </CardContent>
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">

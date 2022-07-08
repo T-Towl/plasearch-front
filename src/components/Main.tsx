@@ -5,6 +5,7 @@ import Map from "./pages/Map";
 import Keyword from "./pages/Keyword";
 import About from "./pages/About";
 import Error from "./pages/Error";
+import Post from "./pages/Post";
 
 function Main() {
   return (
@@ -15,6 +16,7 @@ function Main() {
         <Route path="/keyword" element={<Keyword />} />
         <Route path="/about" element={<About />} />
         <Route path="*" element={<Error />} />
+        <Route path="/post/:id" element={<Post />} />
       </Routes>
     </main>
   );

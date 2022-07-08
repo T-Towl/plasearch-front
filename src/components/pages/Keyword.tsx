@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./PageStyles.scss";
+import { Link } from "react-router-dom";
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import axios from "axios";
 
@@ -231,6 +232,13 @@ function Keyword() {
                     Googleで☆{shop.rating}
                   </Typography>
                   {/* {shopData.address_components[7].long_name} */}
+                  <Button
+                      component={Link}
+                      to="/post/{shop.id}"
+                      color="inherit"
+                  >
+                    Post詳細
+                  </Button>
                 </CardContent>
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">

@@ -51,7 +51,7 @@ function Home() {
           <Button variant="contained" component={Link} to="/map">
             マップから探す
           </Button>
-          <Button variant="outlined" component={Link} to="/keyword">
+          <Button variant="outlined" component={Link} to="/shops">
             キーワードから探す
           </Button>
         </Stack>

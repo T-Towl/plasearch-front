@@ -20,7 +20,7 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import FeedIcon from '@mui/icons-material/Feed';
 // import { integerPropType } from "@mui/utils";
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -38,7 +38,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-function Keyword() {
+function Shops() {
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -83,7 +83,7 @@ function Keyword() {
   // 入力キーワード
   const [keyword, setKeyword] = useState("");
   // itemsのListを表示・非表示を切替。onClick で true を渡して表示させる
-  const [showLists, setShowLists] = useState(false);
+  const [showLists, setShowLists] = useState(true);
   // List 形式で表示するデータ。初期値では検索キーワードを入力していないので上で定義した
   // shops を全件渡している
   const [filteredShops, setFilteredShops] = useState<Shop[]>(shops);
@@ -203,42 +203,42 @@ function Keyword() {
                   flexDirection: "column"
                 }}
               >
-                <LoadScript
+                {/* <LoadScript
                   googleMapsApiKey="AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg"
                   libraries={["places"]}
                 >
                   <GoogleMap onLoad={onMapLoad}></GoogleMap>
-                </LoadScript>
+                </LoadScript> */}
                 <CardHeader
+                  className="card"
+                  component={Link}
+                  to="/post/1"
                   action={
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
+                    <IconButton 
+                      aria-label="settings" 
+                      component={Link}
+                      to={`/shopdetails/${Number(shop?.id)}`}
+                      // color="inherit"
+                    >
+                      <FeedIcon />
                     </IconButton>
                   }
-                  title={shopData?.name}
+                  title={shop.name}
                   subheader={shop.address}
                 />
                 <CardMedia
-                  component="img"
+                  component={"img"}
                   sx={{
+                    height: "250px",
+                    width: "100%",
                     pt: "10%"
                   }}
                   image={shop.photo_reference}
                   alt="image"
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography paragraph component="h2">
-                    <br/>
-                    Googleで☆{shop.rating}
+                  <Typography paragraph>
                   </Typography>
-                  {/* {shopData.address_components[7].long_name} */}
-                  <Button
-                      component={Link}
-                      to="/post/{shop.id}"
-                      color="inherit"
-                  >
-                    Post詳細
-                  </Button>
                 </CardContent>
                 <CardActions disableSpacing>
                   <IconButton aria-label="add to favorites">
@@ -256,7 +256,7 @@ function Keyword() {
                     <ExpandMoreIcon />
                   </ExpandMore>
                 </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
                   <CardContent>
                   <Typography paragraph></Typography>
                       <Typography paragraph>{shop.address}</Typography>
@@ -267,7 +267,7 @@ function Keyword() {
                       <Typography paragraph>A</Typography>
                       <Typography>S</Typography>
                   </CardContent>
-                </Collapse>
+                </Collapse> */}
               </Card>
             </Grid>
           ))}
@@ -277,4 +277,4 @@ function Keyword() {
   );
 }
 
-export default Keyword;
+export default Shops;

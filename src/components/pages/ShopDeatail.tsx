@@ -109,7 +109,6 @@ function ShopDetails() {
 
   const onMapLoad = useCallback((map: google.maps.Map) => {
       new google.maps.places.PlacesService(map).getDetails(request, callback);
-    // ))}
   }, [request]);
   // </店鋪情報取得機能>
 
@@ -159,6 +158,7 @@ function ShopDetails() {
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography paragraph>
+                    {shop?.place_id}
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>

@@ -127,7 +127,7 @@ function Shops() {
   };
   // </検索機能>
 
-
+  // <店鋪情報取得機能>
   const [shopData, setShopData] = useState<any>([]);
 
   const [request, setRequest] = useState({
@@ -170,6 +170,7 @@ function Shops() {
       new google.maps.places.PlacesService(map).getDetails(request, callback);
     // ))}
   }, [request]);
+ // </店鋪情報取得機能>
 
 
   return (
@@ -191,6 +192,7 @@ function Shops() {
           </Grid>
         </Grid>
       </Container>
+
       <Container sx={{ py: 8 }} maxWidth="md">
         <Grid container spacing={4}>
         {showLists &&
@@ -212,7 +214,7 @@ function Shops() {
                 <CardHeader
                   className="card"
                   component={Link}
-                  to="/post/1"
+                  to={`/shopdetails/${Number(shop?.id)}`}
                   action={
                     <IconButton 
                       aria-label="settings" 

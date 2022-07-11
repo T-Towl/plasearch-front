@@ -146,16 +146,16 @@ function ShopDetails() {
                 className="card"
                 // component={Link}
                 // to={`/shopdetails/${Number(shops?.id)}`}
-                action={
-                  <IconButton 
-                    aria-label="settings" 
-                    component={Link}
-                    to={`/shopdetails/${Number(shop?.id)}`}
-                    // color="inherit"
-                  >
-                    <FeedIcon />
-                  </IconButton>
-                }
+                // action={
+                //   <IconButton 
+                //     aria-label="settings" 
+                //     component={Link}
+                //     to={`/shopdetails/${Number(shop?.id)}`}
+                //     color="inherit"
+                //   >
+                //     <FeedIcon />
+                //   </IconButton>
+                // }
                 title={shopData.name}
                 // subheader={shops.address}
               />

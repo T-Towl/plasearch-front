@@ -72,8 +72,11 @@ function ShopDetails() {
   
   // <店鋪情報取得機能>
   const [shopData, setShopData] = useState<any>([]);
+  useEffect(() => {
+    setRequest({placeId: `${shop?.place_id}`});
+  },[shop])
   const [request, setRequest] = useState({
-    placeId: `${shop?.place_id}`,
+    placeId: "",
     // placeId: `ChIJIy1S0_mJGGAR2d0UgvPKUPg`,
     fields: [
       "address_component",

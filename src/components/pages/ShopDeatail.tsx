@@ -72,18 +72,15 @@ function ShopDetails() {
   
   // <店鋪情報取得機能>
   const [shopData, setShopData] = useState<any>([]);
-  useEffect(() => {
-    setRequest({placeId: `${shop?.place_id}`});
-  },[shop])
+
   const [request, setRequest] = useState({
     placeId: "",
-    // placeId: `ChIJIy1S0_mJGGAR2d0UgvPKUPg`,
     fields: [
-      "address_component",
+      // "address_component",
       // "adr_address",
       // "business_status",
       // "business_status",
-      // "formatted_address",
+      "formatted_address",
       // "geometry",
       // "icon",
       // "icon_mask_base_uri",
@@ -103,12 +100,19 @@ function ShopDetails() {
     ]
   });
 
+  useEffect(() => {
+    setRequest({
+      placeId: `${shop?.place_id}`,
+      fields: [``]
+    });
+  },[shop]);
+
   function callback(place: any, status: any) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       setShopData(place);
       console.log(place);
     }
-  }
+  };
 
   const onMapLoad = useCallback((map: google.maps.Map) => {
       new google.maps.places.PlacesService(map).getDetails(request, callback);
@@ -118,83 +122,89 @@ function ShopDetails() {
   return (
     <>
       <Container sx={{ py: 8 }} maxWidth="md">
-        <Grid container spacing={4}>
-        {/* {shops.map((shop, i) => ( */}
-            <Grid item key={shop?.id} >
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column"
-                }}
+        <Grid container 
+          spacing={4} 
+          direction="column"
+          alignItems="center"
+          // justify="center"
+        >
+          <Grid item key={shop?.id} xs={12}>
+            <Card
+              sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column"
+              }}
+            >
+              <LoadScript
+                googleMapsApiKey="AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg"
+                libraries={["places"]}
               >
-                <LoadScript
-                  googleMapsApiKey="AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg"
-                  libraries={["places"]}
-                >
-                  <GoogleMap onLoad={onMapLoad}></GoogleMap>
-                </LoadScript>
-                <CardHeader
-                  className="card"
-                  // component={Link}
-                  // to={`/shopdetails/${Number(shops?.id)}`}
-                  action={
-                    <IconButton 
-                      aria-label="settings" 
-                      component={Link}
-                      to={`/shopdetails/${Number(shop?.id)}`}
-                      // color="inherit"
-                    >
-                      <FeedIcon />
-                    </IconButton>
-                  }
-                  title={shopData.name}
-                  // subheader={shops.address}
-                />
-                <CardMedia
-                  component={"img"}
-                  sx={{
-                    height: "300px"
-                  }}
-                  image={shop?.photo_reference}
-                  alt="image"
-                />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography paragraph>
-                    {shop?.place_id}
-                  </Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ChatBubbleIcon />
-                  </IconButton>
-                  <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
+                <GoogleMap onLoad={onMapLoad}></GoogleMap>
+              </LoadScript>
+              <CardHeader
+                className="card"
+                // component={Link}
+                // to={`/shopdetails/${Number(shops?.id)}`}
+                action={
+                  <IconButton 
+                    aria-label="settings" 
+                    component={Link}
+                    to={`/shopdetails/${Number(shop?.id)}`}
+                    // color="inherit"
                   >
-                    <ExpandMoreIcon />
-                  </ExpandMore>
-                </CardActions>
-                {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
-                  <CardContent>
-                  <Typography paragraph></Typography>
-                      <Typography paragraph>{shop.address}</Typography>
-                      <Typography paragraph>
-                        営業時間:{shop.opening_hours}
-                      </Typography>
-                      <Typography paragraph>H</Typography>
-                      <Typography paragraph>A</Typography>
-                      <Typography>S</Typography>
-                  </CardContent>
-                </Collapse> */}
-              </Card>
-            </Grid>
-          {/* ))} */}
+                    <FeedIcon />
+                  </IconButton>
+                }
+                title={shopData.name}
+                // subheader={shops.address}
+              />
+              <CardMedia
+                component={"img"}
+                sx={{
+                  height: "100%"
+                }}
+                image={shop?.photo_reference}
+                alt="image"
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography paragraph>
+                  住所：{shopData.vicinity}
+                </Typography>
+                {shopData.formatted_phone_number}
+                <br/>
+                
+              </CardContent>
+              <CardActions disableSpacing>
+                <IconButton aria-label="add to favorites">
+                  <FavoriteIcon />
+                </IconButton>
+                <IconButton aria-label="share">
+                  <ChatBubbleIcon />
+                </IconButton>
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </ExpandMore>
+              </CardActions>
+              {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                <Typography paragraph></Typography>
+                    <Typography paragraph>{shop.address}</Typography>
+                    <Typography paragraph>
+                      営業時間:{shop.opening_hours}
+                    </Typography>
+                    <Typography paragraph>H</Typography>
+                    <Typography paragraph>A</Typography>
+                    <Typography>S</Typography>
+                </CardContent>
+              </Collapse> */}
+            </Card>
+          </Grid>
         </Grid>
       </Container>
     </>

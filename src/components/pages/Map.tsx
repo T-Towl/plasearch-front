@@ -159,6 +159,8 @@ function Map() {
               >
                 <div style={divStyle}>
                   <h1>{nearbyShop.name}</h1>
+                  <p>{nearbyShop.address}</p>
+                  <a href={`/shopDetail/${nearbyShop.id}`}>店舗詳細</a>
                 </div>
               </InfoWindow>
             </>

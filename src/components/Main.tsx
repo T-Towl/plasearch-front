@@ -5,7 +5,7 @@ import Map from "./pages/Map";
 import Shops from "./pages/Shops";
 import About from "./pages/About";
 import Error from "./pages/Error";
-import ShopDetails from "./pages/ShopDeatail";
+import ShopDetail from "./pages/ShopDetail";
 
 function Main() {
   return (
@@ -16,7 +16,7 @@ function Main() {
         <Route path="/shops" element={<Shops />} />
         <Route path="/about" element={<About />} />
         <Route path="*" element={<Error />} />
-        <Route path="/shopdetails/:id" element={<ShopDetails />} />
+        <Route path="/shopdetail/:id" element={<ShopDetail />} />
       </Routes>
     </main>
   );

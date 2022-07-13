@@ -17,46 +17,26 @@ import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
+import Rating from "@mui/material/Rating";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FeedIcon from '@mui/icons-material/Feed';
 // import { integerPropType } from "@mui/utils";
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
-
 function Shops() {
-
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
   // <Railsからデータ取得>
   const [isAvailable, setAvailable] = useState(false);
   const [shops, setShops] = useState<Shop[]>([]);
-
   type Shop = {
     id: number;
     name: string;
     lat: number;
     lng: number;
+    phone_number: string;
+    post_code: string;
     address: string;
-    opening_hours: number;
+    opening_hours: string;
     photo_reference: string;
     rating: number;
     place_id: string;
@@ -115,8 +95,10 @@ function Shops() {
         name: "No Item Found",
         lat: 0,
         lng: 0,
-        address: "",
-        opening_hours: 0,
+        phone_number: "-",
+        post_code: "〒-",
+        address: "-",
+        opening_hours: "-",
         photo_reference: "https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage_%E3%83%92%E3%82%9A%E3%82%AF%E3%83%88-760x460.png",
         rating :0,
         place_id :""
@@ -214,12 +196,12 @@ function Shops() {
                 <CardHeader
                   className="card"
                   component={Link}
-                  to={`/shopdetails/${Number(shop?.id)}`}
+                  to={`/shopdetail/${Number(shop?.id)}`}
                   action={
                     <IconButton 
                       aria-label="settings" 
                       component={Link}
-                      to={`/shopdetails/${Number(shop?.id)}`}
+                      to={`/shopdetail/${Number(shop?.id)}`}
                       // color="inherit"
                     >
                       <FeedIcon />
@@ -239,7 +221,18 @@ function Shops() {
                   alt="image"
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography paragraph>
+                  <Rating name="simple-controlled" value={shop?.rating} max={5} />
+                  <Typography paragraph component="h2">
+                    Googleでの評価：☆{shop?.rating}
+                  </Typography>
+                  <Typography paragraph component="h2">
+                    住所：
+                    {/* {shop?.post_code} */}
+                    <br />
+                    {shop?.address}
+                  </Typography>
+                  <Typography paragraph component="h3">
+                    営業時間：{shop?.opening_hours}
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
@@ -249,27 +242,11 @@ function Shops() {
                   <IconButton aria-label="share">
                     <ChatBubbleIcon />
                   </IconButton>
-                  <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                  >
-                    <ExpandMoreIcon />
-                  </ExpandMore>
+                  <div style={{ flexGrow: 1 }}></div>
+                  <Button variant="contained">
+                    店鋪詳細
+                  </Button>
                 </CardActions>
-                {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
-                  <CardContent>
-                  <Typography paragraph></Typography>
-                      <Typography paragraph>{shop.address}</Typography>
-                      <Typography paragraph>
-                        営業時間:{shop.opening_hours}
-                      </Typography>
-                      <Typography paragraph>H</Typography>
-                      <Typography paragraph>A</Typography>
-                      <Typography>S</Typography>
-                  </CardContent>
-                </Collapse> */}
               </Card>
             </Grid>
           ))}

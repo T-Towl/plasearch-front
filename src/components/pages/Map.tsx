@@ -7,6 +7,7 @@ import {
   Marker,
 } from "@react-google-maps/api";
 import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
 import { Shop } from "@mui/icons-material";
 
 const containerStyle = {
@@ -45,10 +46,13 @@ function Map() {
     name: string;
     lat: number;
     lng: number;
-    address :string
-    opening_hours :number
-    photo_reference :string
-    rating :number
+    phone_number: string;
+    post_code: string;
+    address: string;
+    opening_hours: string;
+    photo_reference: string;
+    rating: number;
+    place_id: string;
   };
 
   // useEffectが実行されているかどうかを判定するために用意しています
@@ -160,7 +164,9 @@ function Map() {
                 <div style={divStyle}>
                   <h1>{nearbyShop.name}</h1>
                   <p>{nearbyShop.address}</p>
-                  <a href={`/shopDetail/${nearbyShop.id}`}>店舗詳細</a>
+                  <Button href={`/shopDetail/${nearbyShop.id}`} variant="outlined">
+                    店鋪詳細
+                  </Button>
                 </div>
               </InfoWindow>
             </>
@@ -168,9 +174,15 @@ function Map() {
 
         </GoogleMap>
       </LoadScript>
-      <button onClick={searchNearbyShops}>周辺のお店を探す</button>
-      <p>{neBounds?.lat} : {neBounds?.lng}</p>
-      <p>{swBounds?.lat} : {swBounds?.lng}</p>
+      <Container sx={{ py: 2 }}>
+        <Button onClick={searchNearbyShops} 
+                variant="contained"
+        >
+          周辺のお店を探す
+        </Button>
+      </Container>
+      {/* <p>{neBounds?.lat} : {neBounds?.lng}</p>
+      <p>{swBounds?.lat} : {swBounds?.lng}</p> */}
     </Container>
   );
 };

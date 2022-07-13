@@ -25,13 +25,19 @@ function Header() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h5" color="inherit" sx={{ mr: 1 }} noWrap>
+          <Typography 
+            variant="h5" 
+            color="inherit" 
+            sx={{ mr: 1 }} 
+            noWrap
+          >
             Pla search
           </Typography>
           <Typography 
             style={{ fontSize: 12 }} 
             sx={{ flexGrow: 1 }}
-            color="inherit" noWrap
+            color="inherit" 
+            noWrap
           >
             ‐プラサーチ‐
           </Typography>

@@ -7,6 +7,7 @@ import {
   Marker,
 } from "@react-google-maps/api";
 import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
 import { Shop } from "@mui/icons-material";
 
 const containerStyle = {
@@ -19,11 +20,6 @@ const ErrorText = () => (
   <p className="App-error-text">geolocation IS NOT available</p>
 );
 
-const positionTokyo = {
-  lat: 35.62551386235291,
-  lng: 139.77614366422262
-};
-
 const divStyle = {
   background: "white",
   fontSize: 7.5
@@ -32,15 +28,13 @@ const divStyle = {
 function Map() {
 
   // <infoWindowオプション-->
-  const [size, setSize] = useState<undefined | google.maps.Size>(undefined);
+  const [size, setSize] = useState<undefined | google.maps.Size>();
   const infoWindowOptions = {
     pixelOffset: size
   };
   const createOffsetSize = () => {
     return setSize(new window.google.maps.Size(0, -45));
   };
-
-  const [LatLng, setLatLng] = useState<google.maps.LatLng | google.maps.LatLngLiteral>();
   // </infoWindowオプション-->
 
   // <現在地取得機能-->
@@ -52,10 +46,13 @@ function Map() {
     name: string;
     lat: number;
     lng: number;
-    address :string
-    opening_hours :number
-    photo_reference :string
-    rating :number
+    phone_number: string;
+    post_code: string;
+    address: string;
+    opening_hours: string;
+    photo_reference: string;
+    rating: number;
+    place_id: string;
   };
 
   // useEffectが実行されているかどうかを判定するために用意しています
@@ -166,6 +163,10 @@ function Map() {
               >
                 <div style={divStyle}>
                   <h1>{nearbyShop.name}</h1>
+                  <p>{nearbyShop.address}</p>
+                  <Button href={`/shopDetail/${nearbyShop.id}`} variant="outlined">
+                    店鋪詳細
+                  </Button>
                 </div>
               </InfoWindow>
             </>
@@ -173,9 +174,15 @@ function Map() {
 
         </GoogleMap>
       </LoadScript>
-      <button onClick={searchNearbyShops}>周辺のお店を探す</button>
-      <p>{neBounds?.lat} : {neBounds?.lng}</p>
-      <p>{swBounds?.lat} : {swBounds?.lng}</p>
+      <Container sx={{ py: 2 }}>
+        <Button onClick={searchNearbyShops} 
+                variant="contained"
+        >
+          周辺のお店を探す
+        </Button>
+      </Container>
+      {/* <p>{neBounds?.lat} : {neBounds?.lng}</p>
+      <p>{swBounds?.lat} : {swBounds?.lng}</p> */}
     </Container>
   );
 };

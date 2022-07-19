@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import axios from "axios";
 
 import { styled } from '@mui/material/styles';
 import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -21,7 +20,6 @@ import Rating from "@mui/material/Rating";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import FeedIcon from '@mui/icons-material/Feed';
 
 // <Map基本情報>
 const containerStyle = {
@@ -32,11 +30,6 @@ const containerStyle = {
 const divStyle = {
   background: "white",
   fontSize: 7.5
-};
-
-const position = {
-  lat: 35.62551386235291,
-  lng: 139.77614366422262
 };
 // </Map基本情報>
 

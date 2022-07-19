@@ -8,7 +8,7 @@ import {
 } from "@react-google-maps/api";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import { Shop } from "@mui/icons-material";
+// import { Shop } from "@mui/icons-material";
 
 const containerStyle = {
   height: "60vh",

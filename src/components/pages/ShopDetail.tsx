@@ -82,7 +82,7 @@ function ShopDetail() {
                console.log(res.data);
               })
          .catch(error => console.log(error))
-  },[]);
+  },[id]);
 
   // <InfoWindow詳細設定>
   const [size, setSize] = useState<google.maps.Size>();

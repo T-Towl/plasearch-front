@@ -191,7 +191,11 @@ function Shops() {
                     <ChatBubbleIcon />
                   </IconButton>
                   <div style={{ flexGrow: 1 }}></div>
-                  <Button variant="contained">
+                  <Button 
+                    variant="contained"
+                    component={Link}
+                    to={`/shopdetail/${Number(shop?.id)}`}
+                  >
                     店鋪詳細
                   </Button>
                 </CardActions>

@@ -59,7 +59,7 @@ function ShopDetail() {
     setExpanded(!expanded);
   };
   // shopデータの型
-  const [shop, setShop] = useState<Shop>();
+  const [shop, setShop] = useState<Shop | undefined>(undefined);
   type Shop = {
     id: number;
     name: string;

@@ -120,11 +120,11 @@ function Map() {
   const [nearbyShops, setNearbyShops] = useState<Shop[]>([]);
   const searchNearbyShops = () => {
     const result = shops.filter(
-      (shops) =>
-        shops.lat < neBounds.lat &&
-        shops.lat > swBounds.lat &&
-        shops.lng < neBounds.lng &&
-        shops.lng > swBounds.lng
+      (shop) =>
+        shop.lat < neBounds.lat &&
+        shop.lat > swBounds.lat &&
+        shop.lng < neBounds.lng &&
+        shop.lng > swBounds.lng
     );
     setNearbyShops(result);
     console.log("表示範囲の座標データ取得");
@@ -137,7 +137,7 @@ function Map() {
   return (
     <Container sx={{ py: 4 }} maxWidth="md">
       <LoadScript
-        googleMapsApiKey="AIzaSyDIiOCQLbf1pBeL4JgKiu0gQkdIE6OsfAg"
+        googleMapsApiKey={process.env.REACT_APP_API_KEY}
         onLoad={() => createOffsetSize()}
       >
         {!isFirstRef && !isAvailable && <ErrorText />}

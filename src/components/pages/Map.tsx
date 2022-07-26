@@ -137,7 +137,7 @@ function Map() {
   return (
     <Container sx={{ py: 4 }} maxWidth="md">
       <LoadScript
-        googleMapsApiKey={process.env.REACT_APP_API_KEY}
+        googleMapsApiKey={process.env.REACT_APP_API_KEY || “”}
         onLoad={() => createOffsetSize()}
       >
         {!isFirstRef && !isAvailable && <ErrorText />}

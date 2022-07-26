@@ -220,7 +220,7 @@ function ShopDetail() {
               <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                 <LoadScript
-                    googleMapsApiKey={process.env.REACT_APP_API_KEY}
+                    googleMapsApiKey={process.env.REACT_APP_API_KEY || “”}
                     onLoad={() => createOffsetSize()}
                     libraries={["places"]}
                 >

@@ -1,12 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, createContext } from "react";
+import { LoggedInStatus, HandleLogin } from '../Main'
+import Registration from '../auth/Registration'
+
+import { useNavigate, Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+export const HandleSuccessfulAuthentication = createContext<(data: any) => void>();
+
 function Home() {
+  let navigation = useNavigate();
+  const loggedInStatus = useContext(LoggedInStatus)
+  const handleLogin = useContext(HandleLogin)
+
+  const handleSuccessfulAuthentication = (data: any) => {
+    handleLogin(data)
+    navigation("/dashboard")
+  }
+
   return (
     <Box
       sx={{
@@ -15,6 +29,12 @@ function Home() {
         pb: 6
       }}
     >
+
+      <h2>ログイン状態: {loggedInStatus}</h2>
+      <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
+        <Registration  />
+      </HandleSuccessfulAuthentication.Provider>
+
       <Container maxWidth="sm">
         <Typography
           component="h1"

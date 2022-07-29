@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-export const HandleSuccessfulAuthentication = createContext<(data: any) => void>();
+export const HandleSuccessfulAuthentication = createContext<((data: any) => void) | undefined>(undefined);
 
 function Home() {
   let navigation = useNavigate();

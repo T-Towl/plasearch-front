@@ -10,7 +10,7 @@ import Dashboard from "./pages/Dashboard";
 
 export const LoggedInStatus = createContext("")
 export const User = createContext({})
-export const HandleLogin = createContext<(data: any) => void>();
+export const HandleLogin = createContext<((data: any) => void) | undefined>(undefined);
 
 function Main() {
 

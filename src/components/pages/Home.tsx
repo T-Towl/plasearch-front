@@ -1,6 +1,7 @@
 import React, { useContext, createContext } from "react";
 import { LoggedInStatus, HandleLogin } from '../Main'
 import Registration from '../auth/Registration'
+import Login from '../auth/Login'
 
 import { useNavigate, Link } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -9,7 +10,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-export const HandleSuccessfulAuthentication = createContext<(data: any) => void>();
+export const HandleSuccessfulAuthentication = createContext<((data: any) => void) | undefined>(undefined);
 
 function Home() {
   let navigation = useNavigate();
@@ -32,6 +33,7 @@ function Home() {
       <h2>ログイン状態: {loggedInStatus}</h2>
       <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
         <Registration  />
+        <Login />
       </HandleSuccessfulAuthentication.Provider>
 
       <Container maxWidth="sm">

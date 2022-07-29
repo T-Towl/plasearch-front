@@ -1,32 +1,30 @@
-// useStateフックをimportする
 import React, { useState, useContext} from 'react'
 import axios from 'axios'
 import { HandleSuccessfulAuthentication } from "../pages/Home"
 
-export default function Registration() {
-  // useState()を用いて、ユーザーデータの初期値（空の文字列）を定義する。
+export default function Login() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [passwordConfirmation, setPasswordConfirmation] = useState("")
 
   const handleSuccessfulAuthentication = useContext(HandleSuccessfulAuthentication)
 
   const handleSubmit = (event: any) => {
-    axios.post("http://localhost:3001/users/new",
+    axios.post("http://localhost:3001/sessions",
       {
         user: {
           name: name,
           email: email,
-          password: password,
-          password_confirmation: passwordConfirmation
+          password: password
         }
       },
       { withCredentials: true }
     ).then(response => {
-      if (response.data.status === 'created') {
-        handleSuccessfulAuthentication(response.data)
-      }
+      console.log("login response: ", response)
+    //   if (response.data.status === 'created') {
+    //   if (response.data.logged_in) {
+    //     handleSuccessfulAuthentication(response.data)
+    //   }
       console.log("registration res", response)
     }).catch(error => {
       console.log("registration error", error)
@@ -36,8 +34,7 @@ export default function Registration() {
 
   return (
     <div>
-      <p>新規登録</p>
-
+      <p>ログイン</p>
       <form onSubmit={handleSubmit}> 
         <input
           type="name"
@@ -60,14 +57,7 @@ export default function Registration() {
           value={password}
           onChange={event => setPassword(event.target.value)}
         />
-        <input
-          type="password"
-          name="password_confirmation"
-          placeholder="確認用パスワード"
-          value={passwordConfirmation}
-          onChange={event => setPasswordConfirmation(event.target.value)}
-        />
-        <button type="submit">登録</button>
+        <button type="submit">ログイン</button>
       </form>
     </div>
   )

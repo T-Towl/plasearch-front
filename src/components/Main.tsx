@@ -1,4 +1,5 @@
-import React, { useState, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
+import axios from "axios";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
@@ -20,6 +21,19 @@ function Main() {
   const handleLogin = (data: any) => {
     setLoggedInStatus("ログインなう")
     setUser(data.user)
+  }
+
+  useEffect(() => {
+    checkLoginStatus()
+  })
+
+  const checkLoginStatus = () => {
+    axios.get("http://localhost:3001/sessions/new", { withCredentials: true 
+    }).then(response => {
+      console.log("ログイン状況", response)
+    }).catch(error => {
+      console.log("ログインエラー", error)
+    })
   }
 
   return (

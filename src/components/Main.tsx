@@ -10,14 +10,14 @@ import Dashboard from "./pages/Dashboard";
 
 export const LoggedInStatus = createContext("")
 export const User = createContext({})
-export const HandleLogin = createContext<undefined | ((data: any) => void)>();
+export const HandleLogin = createContext<(data: any) => void>();
 
 function Main() {
 
   const [loggedInStatus, setLoggedInStatus] = useState("未ログイン")
   const [user, setUser] = useState({})
 
-  const handleLogin = (data) => {
+  const handleLogin = (data: any) => {
     setLoggedInStatus("ログインなう")
     setUser(data.user)
   }

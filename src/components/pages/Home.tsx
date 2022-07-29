@@ -2,7 +2,7 @@ import React, { useContext, createContext } from "react";
 import { LoggedInStatus, HandleLogin } from '../Main'
 import Registration from '../auth/Registration'
 
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
@@ -12,13 +12,13 @@ import Container from "@mui/material/Container";
 export const HandleSuccessfulAuthentication = createContext<(data: any) => void>();
 
 function Home() {
-
+  let navigation = useNavigate();
   const loggedInStatus = useContext(LoggedInStatus)
   const handleLogin = useContext(HandleLogin)
 
-  const handleSuccessfulAuthentication = (data) => {
+  const handleSuccessfulAuthentication = (data: any) => {
     handleLogin(data)
-    handleLogin.history.push("/dashboard")
+    navigation("/dashboard")
   }
 
   return (

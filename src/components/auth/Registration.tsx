@@ -37,7 +37,6 @@ export default function Registration() {
   return (
     <div>
       <p>新規登録</p>
-        
       <form onSubmit={handleSubmit}> 
         <input
           type="name"

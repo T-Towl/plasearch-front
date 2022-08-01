@@ -24,9 +24,9 @@ export default function Registration() {
       },
       { withCredentials: true }
     ).then(response => {
-      if (response.data.status === 'created') {
-        handleSuccessfulAuthentication(response.data)
-      }
+    //   if (response.data.status === 'created') {
+    //     !!handleSuccessfulAuthentication && handleSuccessfulAuthentication(response.data)
+    //   }
       console.log("registration res", response)
     }).catch(error => {
       console.log("registration error", error)

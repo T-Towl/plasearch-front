@@ -23,18 +23,18 @@ function Main() {
     setUser(data.user)
   }
 
-  useEffect(() => {
-    checkLoginStatus()
-  })
+  // useEffect(() => {
+  //   checkLoginStatus()
+  // })
 
-  const checkLoginStatus = () => {
-    axios.get("http://localhost:3001/sessions/new", { withCredentials: true 
-    }).then(response => {
-      console.log("ログイン状況", response)
-    }).catch(error => {
-      console.log("ログインエラー", error)
-    })
-  }
+  // const checkLoginStatus = () => {
+  //   axios.get("http://localhost:3001/sessions/new", { withCredentials: true 
+  //   }).then(response => {
+  //     console.log("ログイン状況", response)
+  //   }).catch(error => {
+  //     console.log("ログインエラー", error)
+  //   })
+  // }
 
   return (
     <main>

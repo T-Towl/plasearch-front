@@ -31,8 +31,8 @@ function Home() {
         pb: 6
       }}
     >
-
       <h2>ログイン状態: {loggedInStatus}</h2>
+      
       <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
         <Registration  />
         <Login />

@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-const defaultValue = () => {}
 export const HandleSuccessfulAuthentication = createContext<((data: any) => void) | undefined>(undefined);
 
 function Home() {

@@ -13,7 +13,7 @@ export default function Registration() {
   const handleSuccessfulAuthentication = useContext(HandleSuccessfulAuthentication)
 
   const handleSubmit = (event: any) => {
-    axios.post("http://localhost:3001/users/new",
+    axios.post("http://localhost:3001/api/v1/users",
       {
         user: {
           name: name,
@@ -25,9 +25,10 @@ export default function Registration() {
       { withCredentials: true }
     ).then(response => {
       if (response.data.status === 'created') {
-        handleSuccessfulAuthentication(response.data)
+        !!handleSuccessfulAuthentication && handleSuccessfulAuthentication(response.data)
       }
-      console.log("registration res", response)
+      console.log("ユーザー登録完了")
+      // console.log("registration res", response)
     }).catch(error => {
       console.log("registration error", error)
     })

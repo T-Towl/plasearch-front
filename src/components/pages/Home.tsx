@@ -18,7 +18,7 @@ function Home() {
   const handleLogin = useContext(HandleLogin)
 
   const handleSuccessfulAuthentication = (data: any) => {
-    handleLogin(data)
+    !!handleLogin && handleLogin(data)
     navigation("/dashboard")
   }
 
@@ -31,6 +31,7 @@ function Home() {
       }}
     >
       <h2>ログイン状態: {loggedInStatus}</h2>
+      
       <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
         <Registration  />
         <Login />

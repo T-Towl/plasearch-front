@@ -27,10 +27,18 @@ function Main() {
     checkLoginStatus()
   })
 
-  // 追加
   const checkLoginStatus = () => {
-    axios.get("http://localhost:3001/sessions/new", { withCredentials: true })
-      .then(response => {
+    axios.get('http://localhost:3001/api/v1/sessions/show', { withCredentials: true }
+    ).then(response => {
+      if (response.data.logged_in && loggedInStatus === "未ログイン") {
+        setLoggedInStatus("ログインなう")
+        setUser(response.data.user)
+        console.log("ログインなう")
+      } else if (!response.data.logged_in && loggedInStatus === "ログインなう") {
+        setLoggedInStatus("未ログイン")
+        setUser({})
+        console.log("未ログイン")
+      }
       console.log("ログイン状況", response)
     }).catch(error => {
       console.log("ログインエラー", error)
@@ -40,6 +48,7 @@ function Main() {
   return (
     <main>
       <LoggedInStatus.Provider value={loggedInStatus}>
+      <User.Provider value={user}>
       <HandleLogin.Provider value={handleLogin}>
         <Routes>
           <Route index element={<Home />} />
@@ -51,6 +60,7 @@ function Main() {
           <Route path="/dashboard" element={<Dashboard />} />      
         </Routes>
       </HandleLogin.Provider>
+      </User.Provider>
       </LoggedInStatus.Provider>
     </main>
   );

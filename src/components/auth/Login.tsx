@@ -3,29 +3,26 @@ import axios from 'axios'
 import { HandleSuccessfulAuthentication } from "../pages/Home"
 
 export default function Login() {
-  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   const handleSuccessfulAuthentication = useContext(HandleSuccessfulAuthentication)
 
   const handleSubmit = (event: any) => {
-    axios.post("http://localhost:3001/sessions",
+    axios.post("http://localhost:3001/api/v1/sessions",
       {
         user: {
-          name: name,
           email: email,
           password: password
         }
       },
       { withCredentials: true }
     ).then(response => {
-      console.log("login response: ", response)
-    //   if (response.data.status === 'created') {
-    //   if (response.data.logged_in) {
-    //     handleSuccessfulAuthentication(response.data)
-    //   }
-      console.log("registration res", response)
+      if (response.data.logged_in) {
+        !!handleSuccessfulAuthentication && handleSuccessfulAuthentication(response.data)
+      }
+      console.log("ログイン成功")
+      // console.log("login response: ", response)
     }).catch(error => {
       console.log("registration error", error)
     })
@@ -35,14 +32,7 @@ export default function Login() {
   return (
     <div>
       <p>ログイン</p>
-      <form onSubmit={handleSubmit}> 
-        <input
-          type="name"
-          name="name"
-          placeholder="ユーザーネーム"
-          value={name}
-          onChange={event => setName(event.target.value)}
-        />         
+      <form onSubmit={handleSubmit}>       
         <input
           type="email"
           name="email"

@@ -1,5 +1,6 @@
 import React, { useContext, createContext } from "react";
-import { LoggedInStatus, HandleLogin } from '../Main'
+import axios from 'axios'
+import { LoggedInStatus, HandleLogin, HandleLogout } from '../Main'
 import Registration from '../auth/Registration'
 import Login from '../auth/Login'
 
@@ -16,10 +17,18 @@ function Home() {
   let navigation = useNavigate();
   const loggedInStatus = useContext(LoggedInStatus)
   const handleLogin = useContext(HandleLogin)
+  const handleLogout = useContext(HandleLogout)
 
   const handleSuccessfulAuthentication = (data: any) => {
     !!handleLogin && handleLogin(data)
     navigation("/dashboard")
+  }
+
+  const handleLogoutClick = () => {
+    axios.delete("http://localhost:3001/api/v1/sessions/delete", { withCredentials: true }
+      ).then(response => {
+        !!handleLogout && handleLogout()
+      }).catch(error => console.log("ログアウトエラー", error))
   }
 
   return (
@@ -31,6 +40,8 @@ function Home() {
       }}
     >
       <h2>ログイン状態: {loggedInStatus}</h2>
+
+      <button onClick={handleLogoutClick}>ログアウト</button>
       
       <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
         <Registration  />

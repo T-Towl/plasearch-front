@@ -20,9 +20,9 @@ export default function Login() {
     ).then(response => {
       if (response.data.logged_in) {
         !!handleSuccessfulAuthentication && handleSuccessfulAuthentication(response.data)
+        console.log("ログイン成功")
       }
-      console.log("ログイン成功")
-      // console.log("login response: ", response)
+      console.log("login response: ", response)
     }).catch(error => {
       console.log("registration error", error)
     })

@@ -21,7 +21,7 @@ function Main() {
   const [user, setUser] = useState({})
 
   const handleLogin = (data: any) => {
-    setLoggedInStatus("ログインなう")
+    setLoggedInStatus(data.user.name)
     setUser(data.user)
   }
   const handleLogout = () => {
@@ -37,10 +37,10 @@ function Main() {
     axios.get('http://localhost:3001/api/v1/sessions/show', { withCredentials: true }
     ).then(response => {
       if (response.data.logged_in && loggedInStatus === "未ログイン") {
-        setLoggedInStatus("ログインなう")
+        setLoggedInStatus(response.data.user.name)
         setUser(response.data.user)
         console.log("ログインなう")
-      } else if (!response.data.logged_in && loggedInStatus === "ログインなう") {
+      } else if (!response.data.logged_in && loggedInStatus !== "未ログイン") {
         setLoggedInStatus("未ログイン")
         setUser({})
         console.log("未ログイン")

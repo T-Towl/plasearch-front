@@ -41,12 +41,14 @@ function Home() {
     >
       <h2>ログイン状態: {loggedInStatus}</h2>
 
-      <button onClick={handleLogoutClick}>ログアウト</button>
-      
+      {loggedInStatus === "未ログイン" ?
       <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
         <Registration  />
         <Login />
       </HandleSuccessfulAuthentication.Provider>
+      :
+      <button onClick={handleLogoutClick}>ログアウト</button>
+      }
 
       <Container maxWidth="sm">
         <Typography

@@ -26,8 +26,8 @@ export default function Registration() {
     ).then(response => {
       if (response.data.status === 'created') {
         !!handleSuccessfulAuthentication && handleSuccessfulAuthentication(response.data)
+        console.log("ユーザー登録完了")
       }
-      console.log("ユーザー登録完了")
       // console.log("registration res", response)
     }).catch(error => {
       console.log("registration error", error)

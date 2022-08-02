@@ -12,6 +12,8 @@ import Dashboard from "./pages/Dashboard";
 export const LoggedInStatus = createContext("")
 export const User = createContext({})
 export const HandleLogin = createContext<((data: any) => void) | undefined>(undefined);
+export const HandleLogout = createContext<(() => void) | undefined>(undefined);
+
 
 function Main() {
 
@@ -21,6 +23,10 @@ function Main() {
   const handleLogin = (data: any) => {
     setLoggedInStatus("ログインなう")
     setUser(data.user)
+  }
+  const handleLogout = () => {
+    setLoggedInStatus("未ログイン")
+    setUser({})
   }
 
   useEffect(() => {
@@ -47,9 +53,9 @@ function Main() {
 
   return (
     <main>
-      <LoggedInStatus.Provider value={loggedInStatus}>
-      <User.Provider value={user}>
       <HandleLogin.Provider value={handleLogin}>
+      <HandleLogout.Provider value={handleLogout}>
+      <LoggedInStatus.Provider value={loggedInStatus}>
         <Routes>
           <Route index element={<Home />} />
           <Route path="/map" element={<Map />} />
@@ -59,9 +65,9 @@ function Main() {
           <Route path="*" element={<Error />} />      
           <Route path="/dashboard" element={<Dashboard />} />      
         </Routes>
-      </HandleLogin.Provider>
-      </User.Provider>
       </LoggedInStatus.Provider>
+      </HandleLogout.Provider>
+      </HandleLogin.Provider>
     </main>
   );
 }

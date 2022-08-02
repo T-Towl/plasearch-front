@@ -55,6 +55,7 @@ function Main() {
       <HandleLogin.Provider value={handleLogin}>
       <HandleLogout.Provider value={handleLogout}>
       <LoggedInStatus.Provider value={loggedInStatus}>
+      <User.Provider value={user}>
         <Routes>
           <Route index element={<Home />} />
           <Route path="/map" element={<Map />} />
@@ -64,6 +65,7 @@ function Main() {
           <Route path="*" element={<Error />} />      
           <Route path="/dashboard" element={<Dashboard />} />      
         </Routes>
+      </User.Provider>
       </LoggedInStatus.Provider>
       </HandleLogout.Provider>
       </HandleLogin.Provider>

@@ -13,7 +13,7 @@ export default function Registration() {
   const handleSuccessfulAuthentication = useContext(HandleSuccessfulAuthentication)
 
   const handleSubmit = (event: any) => {
-    axios.post("http://localhost:3001/api/v1/users",
+    axios.post("https://classique-chaise-00920.herokuapp.com/api/v1/users",
       {
         user: {
           name: name,

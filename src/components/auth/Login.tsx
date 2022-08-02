@@ -9,7 +9,7 @@ export default function Login() {
   const handleSuccessfulAuthentication = useContext(HandleSuccessfulAuthentication)
 
   const handleSubmit = (event: any) => {
-    axios.post("http://localhost:3001/api/v1/sessions",
+    axios.post("https://classique-chaise-00920.herokuapp.com/api/v1/sessions",
       {
         user: {
           email: email,

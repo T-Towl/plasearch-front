@@ -1,6 +1,6 @@
 import React, { useContext, createContext } from "react";
 import axios from 'axios'
-import { LoggedInStatus, HandleLogin, HandleLogout } from '../Main'
+import { LoggedInStatus, HandleLogin, HandleLogout } from '../../App'
 import Registration from '../auth/Registration'
 import Login from '../auth/Login'
 
@@ -11,25 +11,25 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-export const HandleSuccessfulAuthentication = createContext<((data: any) => void) | undefined>(undefined);
+// export const HandleSuccessfulAuthentication = createContext<((data: any) => void) | undefined>(undefined);
 
 function Home() {
-  let navigation = useNavigate();
-  const loggedInStatus = useContext(LoggedInStatus)
-  const handleLogin = useContext(HandleLogin)
-  const handleLogout = useContext(HandleLogout)
+  // let navigation = useNavigate();
+  // const loggedInStatus = useContext(LoggedInStatus)
+  // const handleLogin = useContext(HandleLogin)
+  // const handleLogout = useContext(HandleLogout)
 
-  const handleSuccessfulAuthentication = (data: any) => {
-    !!handleLogin && handleLogin(data)
-    navigation("/dashboard")
-  }
+  // const handleSuccessfulAuthentication = (data: any) => {
+  //   !!handleLogin && handleLogin(data)
+  //   navigation("/dashboard")
+  // }
 
-  const handleLogoutClick = () => {
-    axios.delete("http://localhost:3001/api/v1/sessions/delete", { withCredentials: true }
-      ).then(response => {
-        !!handleLogout && handleLogout()
-      }).catch(error => console.log("ログアウトエラー", error))
-}
+  // const handleLogoutClick = () => {
+  //   axios.delete("http://localhost:3001/api/v1/sessions/delete", { withCredentials: true }
+  //     ).then(response => {
+  //       !!handleLogout && handleLogout()
+  //     }).catch(error => console.log("ログアウトエラー", error))
+  // }
 
   return (
     <Box
@@ -39,14 +39,16 @@ function Home() {
         pb: 6
       }}
     >
-      <h2>ログイン状態: {loggedInStatus}</h2>
+      {/* <h2>ログイン状態: {loggedInStatus}</h2>
       
-      <button onClick={handleLogoutClick}>ログアウト</button>
-
+      {loggedInStatus === "未ログイン" ?
       <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
         <Registration  />
         <Login />
       </HandleSuccessfulAuthentication.Provider>
+      :
+      <button onClick={handleLogoutClick}>ログアウト</button>
+      } */}
 
       <Container maxWidth="sm">
         <Typography

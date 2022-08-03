@@ -1,7 +1,7 @@
 // useStateフックをimportする
 import React, { useState, useContext} from 'react'
 import axios from 'axios'
-import { HandleSuccessfulAuthentication } from "../pages/Home"
+import { HandleSuccessfulAuthentication } from "../pages/User"
 
 export default function Registration() {
   // useState()を用いて、ユーザーデータの初期値（空の文字列）を定義する。

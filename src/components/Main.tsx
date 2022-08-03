@@ -6,7 +6,7 @@ import Shops from "./pages/Shops";
 import ShopDetail from "./pages/ShopDetail";
 import About from "./pages/About";
 import Error from "./pages/Error";
-import User from "./pages/User";
+import User from "./auth/User";
 
 function Main() {
 

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import "./PageStyles.scss";
 import { Link } from "react-router-dom";
 // import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import axios from "axios";
+import { LoggedInStatus } from '../../App'
 
 // import { styled } from '@mui/material/styles';
 import Container from "@mui/material/Container";
@@ -25,6 +26,9 @@ import FeedIcon from '@mui/icons-material/Feed';
 // import { integerPropType } from "@mui/utils";
 
 function Shops() {
+
+  const loggedInStatus = useContext(LoggedInStatus)
+
   // <Railsからデータ取得>
   const isAvailable = false;
   const [shops, setShops] = useState<Shop[]>([]);
@@ -53,7 +57,7 @@ function Shops() {
     isFirstRef.current = false;
     axios.get('http://localhost:3001/api/v1/shops')
          .then(res => {setShops(res.data)
-               console.log("Rails Api からデータを取得");
+               console.log("Rails Api からデータを取得", res);
               })
          .catch(error => console.log(error))
   },[isAvailable]);
@@ -122,7 +126,7 @@ function Shops() {
               onChange={(e) => setKeyword(e.target.value)}
               onClick={() => setShowLists(true)}
             />
-            <Button variant="outlined" onClick={Search}>
+            <Button variant="contained" onClick={Search}>
               検索
             </Button>
           </Grid>
@@ -184,12 +188,19 @@ function Shops() {
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ChatBubbleIcon />
-                  </IconButton>
+                  {loggedInStatus === "未ログイン" ?
+                    <>
+                    </>
+                  :
+                    <>
+                      <IconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                      </IconButton>
+                      <IconButton aria-label="share">
+                        <ChatBubbleIcon />
+                      </IconButton>
+                    </>
+                  }
                   <div style={{ flexGrow: 1 }}></div>
                   <Button 
                     variant="contained"

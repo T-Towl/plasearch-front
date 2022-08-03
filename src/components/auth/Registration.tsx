@@ -1,7 +1,7 @@
 // useStateフックをimportする
 import React, { useState, useContext} from 'react'
 import axios from 'axios'
-import { HandleSuccessfulAuthentication } from "../pages/User"
+import { HandleSuccessfulAuthentication } from "./User"
 
 export default function Registration() {
   // useState()を用いて、ユーザーデータの初期値（空の文字列）を定義する。
@@ -28,7 +28,7 @@ export default function Registration() {
         !!handleSuccessfulAuthentication && handleSuccessfulAuthentication(response.data)
         console.log("ユーザー登録完了")
       }
-      // console.log("registration res", response)
+      console.log("registration res", response)
     }).catch(error => {
       console.log("registration error", error)
     })

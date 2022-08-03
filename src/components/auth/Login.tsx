@@ -1,6 +1,6 @@
 import React, { useState, useContext} from 'react'
 import axios from 'axios'
-import { HandleSuccessfulAuthentication } from "../pages/User"
+import { HandleSuccessfulAuthentication } from "./User"
 
 export default function Login() {
   const [email, setEmail] = useState("")

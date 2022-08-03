@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import axios from 'axios'
-import { LoggedInStatus, HandleLogin, HandleLogout } from '../../App'
+import { LoggedInStatus, HandleLogout } from '../../App'
 import { Link } from "react-router-dom";
 
 import "./Defaults.scss"

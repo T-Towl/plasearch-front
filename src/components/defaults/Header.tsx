@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import axios from 'axios'
 import { LoggedInStatus, HandleLogin, HandleLogout } from '../../App'
-
 import { Link } from "react-router-dom";
+
+import "./Defaults.scss"
 import CssBaseline from "@mui/material/CssBaseline";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -41,6 +42,9 @@ function Header() {
             <HomeIcon />
           </IconButton>
           <Typography 
+            className="link"
+            component={Link}
+            to="/about"
             variant="h5" 
             color="inherit" 
             sx={{ mr: 1 }} 

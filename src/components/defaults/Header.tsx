@@ -21,7 +21,7 @@ function Header() {
   const handleLogout = useContext(HandleLogout)
 
   const handleLogoutClick = () => {
-    axios.delete("http://localhost:3001/api/v1/sessions/delete", { withCredentials: true }
+    axios.delete('https://classique-chaise-00920.herokuapp.com/api/v1/sessions/delete', { withCredentials: true }
       ).then(response => {
         !!handleLogout && handleLogout()
       }).catch(error => console.log("ログアウトエラー", error))
@@ -84,7 +84,7 @@ function Header() {
               </Button>
             </>  
           }
-          
+
         </Toolbar>
       </AppBar>
     </div>

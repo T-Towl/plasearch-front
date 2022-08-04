@@ -4,7 +4,7 @@ import { LoggedInStatus, HandleLogin, HandleLogout } from '../../App'
 import Registration from './Registration'
 import Login from './Login'
 
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 
 export const HandleSuccessfulAuthentication = createContext<((data: any) => void) | undefined>(undefined);

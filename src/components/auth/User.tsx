@@ -1,6 +1,6 @@
 import React, { useContext, createContext } from "react";
 import axios from 'axios'
-import { LoggedInStatus, HandleLogin, HandleLogout } from '../../App'
+import { LoggedInStatusContext, HandleLoginContext, HandleLogoutContext } from '../../App'
 import Registration from './Registration'
 import Login from './Login'
 
@@ -10,10 +10,10 @@ import Button from "@mui/material/Button";
 export const HandleSuccessfulAuthentication = createContext<((data: any) => void) | undefined>(undefined);
 
 function User() {
-    let navigation = useNavigate();
-    const loggedInStatus = useContext(LoggedInStatus)
-    const handleLogin = useContext(HandleLogin)
-    const handleLogout = useContext(HandleLogout)
+    const navigation = useNavigate();
+    const loggedInStatus = useContext(LoggedInStatusContext)
+    const handleLogin = useContext(HandleLoginContext)
+    const handleLogout = useContext(HandleLogoutContext)
 
     const handleSuccessfulAuthentication = (data: any) => {
       !!handleLogin && handleLogin(data)

@@ -9,10 +9,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
 
-export const LoggedInStatus = createContext("")
-export const User = createContext({})
-export const HandleLogin = createContext<((data: any) => void) | undefined>(undefined);
-export const HandleLogout = createContext<(() => void) | undefined>(undefined);
+export const LoggedInStatusContext = createContext("")
+export const UserContext = createContext({})
+export const HandleLoginContext = createContext<((data: any) => void) | undefined>(undefined);
+export const HandleLogoutContext = createContext<(() => void) | undefined>(undefined);
 
 export default function App() {
 
@@ -53,17 +53,17 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <HandleLogin.Provider value={handleLogin}>
-        <HandleLogout.Provider value={handleLogout}>
-        <LoggedInStatus.Provider value={loggedInStatus}>
-        <User.Provider value={user}>
-          <Header />
-          <Main />
-          <Footer />
-        </User.Provider>
-        </LoggedInStatus.Provider>
-        </HandleLogout.Provider>
-        </HandleLogin.Provider>
+        <HandleLoginContext.Provider value={handleLogin}>
+          <HandleLogoutContext.Provider value={handleLogout}>
+            <LoggedInStatusContext.Provider value={loggedInStatus}>
+              <UserContext.Provider value={user}>
+                <Header />
+                <Main />
+                <Footer />
+              </UserContext.Provider>
+            </LoggedInStatusContext.Provider>
+          </HandleLogoutContext.Provider>
+        </HandleLoginContext.Provider>
       </ThemeProvider>
     </>
   );

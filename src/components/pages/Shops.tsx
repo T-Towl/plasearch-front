@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
+<<<<<<< HEAD
 import { LoggedInStatus } from '../../App'
+=======
+>>>>>>> origin/user_loginout
 import "./PageStyles.scss";
 import { Link } from "react-router-dom";
 import axios from "axios";
+<<<<<<< HEAD
 // import { GoogleMap, LoadScript } from "@react-google-maps/api";
+=======
+import { LoggedInStatus } from '../../App'
+>>>>>>> origin/user_loginout
 
 // import { styled } from '@mui/material/styles';
 import Container from "@mui/material/Container";
@@ -55,7 +62,7 @@ function Shops() {
   */
   useEffect(() => {
     isFirstRef.current = false;
-    axios.get('https://classique-chaise-00920.herokuapp.com/api/v1/shops')
+    axios.get('http://localhost:3001/api/v1/shops')
          .then(res => {setShops(res.data)
                console.log("Rails Api からデータを取得", res);
               })

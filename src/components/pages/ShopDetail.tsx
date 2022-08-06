@@ -80,7 +80,11 @@ function ShopDetail() {
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
     // isFirstRef.current = false;
+<<<<<<< HEAD
     axios.get(`https://classique-chaise-00920.herokuapp.com/api/v1/shops/${id}`)
+=======
+    axios.get(`http://localhost:3001/api/v1/shops/${id}`)
+>>>>>>> origin/user_loginout
          .then(res => {setShop(res.data)
                console.log("Rails Api からデータを取得");
                console.log(res.data);
@@ -197,7 +201,10 @@ function ShopDetail() {
                 <Typography paragraph component="h3">
                   営業時間：{shop?.opening_hours}
                 </Typography>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/user_loginout
                 {/* ↓Google Place APIからデータを取得する場合は以下の記法を用いる */}
                 {/* <Typography paragraph>
                   {(shopData?.address_components || [])[5]?.long_name}

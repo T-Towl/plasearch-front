@@ -70,7 +70,7 @@ function Map() {
     getCurrentPosition();
     // ↓Railsからデータを取得
     axios.get(
-      'https://classique-chaise-00920.herokuapp.com/api/v1/shops')
+      'http://localhost:3001/api/v1/shops')
       .then(res => {setShops(res.data); console.log("Rails Api からデータを取得");})
       .catch(error => console.log(error));
   }, [isAvailable]);

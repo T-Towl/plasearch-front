@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import axios from "axios";
-import { LoggedInStatus } from '../../App'
+import { LoggedInStatusContext } from '../../App'
 
 import { styled } from '@mui/material/styles';
 import Container from "@mui/material/Container";
@@ -53,7 +53,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 function ShopDetail() {
 
-  const loggedInStatus = useContext(LoggedInStatus)
+  const loggedInStatus = useContext(LoggedInStatusContext)
 
   // params id を受け取る
   const { id } = useParams();
@@ -80,11 +80,7 @@ function ShopDetail() {
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
     // isFirstRef.current = false;
-<<<<<<< HEAD
     axios.get(`https://classique-chaise-00920.herokuapp.com/api/v1/shops/${id}`)
-=======
-    axios.get(`http://localhost:3001/api/v1/shops/${id}`)
->>>>>>> origin/user_loginout
          .then(res => {setShop(res.data)
                console.log("Rails Api からデータを取得");
                console.log(res.data);
@@ -201,10 +197,6 @@ function ShopDetail() {
                 <Typography paragraph component="h3">
                   営業時間：{shop?.opening_hours}
                 </Typography>
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/user_loginout
                 {/* ↓Google Place APIからデータを取得する場合は以下の記法を用いる */}
                 {/* <Typography paragraph>
                   {(shopData?.address_components || [])[5]?.long_name}

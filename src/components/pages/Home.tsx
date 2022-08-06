@@ -7,11 +7,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 function Home() {
-<<<<<<< HEAD
   
-=======
-
->>>>>>> origin/user_loginout
   return (
     <Box
       sx={{
@@ -20,10 +16,6 @@ function Home() {
         pb: 6
       }}
     >
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/user_loginout
       <Container maxWidth="sm">
         <Typography
           variant="h2"

@@ -21,6 +21,8 @@ import Rating from "@mui/material/Rating";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import StarIcon from '@mui/icons-material/Star';
+
 
 // <Map基本情報>
 const containerStyle = {
@@ -54,14 +56,21 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 function ShopDetail() {
 
   const loggedInStatus = useContext(LoggedInStatusContext)
+  
+  const [favoriteData, setFavoriteData] = useState("a")
+
+  const handleFavoriteClick = () => {}
+  const handleDeleteFavoriteClick = () => {}
 
   // params id を受け取る
   const { id } = useParams();
+
   // 折り畳み機能 on/off
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
   // shopデータの型
   const [shop, setShop] = useState<Shop | undefined>(undefined);
   type Shop = {
@@ -77,13 +86,15 @@ function ShopDetail() {
     rating: number;
     place_id: string;
   };
+
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
     // isFirstRef.current = false;
-    axios.get(`https://classique-chaise-00920.herokuapp.com/api/v1/shops/${id}`)
-         .then(res => {setShop(res.data)
-               console.log("Rails Api からデータを取得");
-               console.log(res.data);
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops/${id}`)
+         .then(res => 
+              {setShop(res.data.shop)
+               setFavoriteData(res.data.favorite)
+               console.log("Rails Api からデータを取得", res.data);
               })
          .catch(error => console.log(error))
   },[id]);
@@ -170,11 +181,42 @@ function ShopDetail() {
                 flexDirection: "column"
               }}
             >
-              <CardHeader
-                className="card"
-                title={shop?.name}
-                // subheader={shop.address}
-              />
+              {loggedInStatus === "未ログイン" ?
+                <CardHeader
+                  className="card"
+                  title={shop?.name}
+                />
+              :
+                {favoriteData === "a" ?
+                  <CardHeader
+                    className="card"
+                    title={shop?.name}
+                    action={
+                      <IconButton 
+                        aria-label="settings"
+                        // color="inherit"
+                        onClick={handleFavoriteClick}
+                      >
+                        <StarIcon />
+                      </IconButton>
+                    }
+                  />
+                :
+                  <CardHeader
+                    className="card"
+                    title={shop?.name}
+                    action={
+                      <IconButton 
+                        aria-label="settings"
+                        color="inherit"
+                        onClick={handleDeleteFavoriteClick}
+                      >
+                        <StarIcon />
+                      </IconButton>
+                    }
+                  />
+                }
+              }
               <CardMedia
                 component={"img"}
                 sx={{

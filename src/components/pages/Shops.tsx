@@ -55,7 +55,7 @@ function Shops() {
   */
   useEffect(() => {
     isFirstRef.current = false;
-    axios.get('https://classique-chaise-00920.herokuapp.com/api/v1/shops')
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops`)
          .then(res => {setShops(res.data)
                console.log("Rails Api からデータを取得", res);
               })

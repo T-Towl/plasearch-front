@@ -80,7 +80,7 @@ function ShopDetail() {
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
     // isFirstRef.current = false;
-    axios.get(`https://classique-chaise-00920.herokuapp.com/api/v1/shops/${id}`)
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops/${id}`)
          .then(res => {setShop(res.data)
                console.log("Rails Api からデータを取得");
                console.log(res.data);

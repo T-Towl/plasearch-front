@@ -33,7 +33,7 @@ export default function App() {
   })
 
   const checkLoginStatus = () => {
-    axios.get(`https://classique-chaise-00920.herokuapp.com/api/v1/sessions/show`, { withCredentials: true }
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/show`, { withCredentials: true }
     ).then(response => {
       if (response.data.logged_in && loggedInStatus === "未ログイン") {
         setLoggedInStatus(response.data.user.name)

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Defaults.scss"
-import { LoggedInStatus, HandleLogout } from '../../App'
+import { LoggedInStatusContext, HandleLogoutContext } from '../../App'
 import { Link } from "react-router-dom";
 import axios from 'axios'
 
@@ -17,11 +17,11 @@ import HomeIcon from '@mui/icons-material/Home';
 
 function Header() {
 
-  const loggedInStatus = useContext(LoggedInStatus)
-  const handleLogout = useContext(HandleLogout)
+  const loggedInStatus = useContext(LoggedInStatusContext)
+  const handleLogout = useContext(HandleLogoutContext)
 
   const handleLogoutClick = () => {
-    axios.delete('https://classique-chaise-00920.herokuapp.com/api/v1/sessions/delete', { withCredentials: true }
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/delete`, { withCredentials: true }
       ).then(response => {
         !!handleLogout && handleLogout()
       }).catch(error => console.log("ログアウトエラー", error))
@@ -84,7 +84,6 @@ function Header() {
               </Button>
             </>  
           }
-
         </Toolbar>
       </AppBar>
     </div>

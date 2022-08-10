@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { LoggedInStatus } from '../../App'
+import { LoggedInStatusContext } from '../../App'
 import "./PageStyles.scss";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -27,7 +27,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 
 function Shops() {
 
-  const loggedInStatus = useContext(LoggedInStatus)
+  const loggedInStatus = useContext(LoggedInStatusContext)
 
   // <Railsからデータ取得>
   const isAvailable = false;
@@ -55,7 +55,7 @@ function Shops() {
   */
   useEffect(() => {
     isFirstRef.current = false;
-    axios.get('https://classique-chaise-00920.herokuapp.com/api/v1/shops')
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops`)
          .then(res => {setShops(res.data)
                console.log("Rails Api からデータを取得", res);
               })

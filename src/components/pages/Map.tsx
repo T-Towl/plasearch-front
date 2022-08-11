@@ -70,7 +70,7 @@ function Map() {
     getCurrentPosition();
     // ↓Railsからデータを取得
     axios.get(
-      `${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops`)
+      `${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops`)
       .then(res => {setShops(res.data); console.log("Rails Api からデータを取得");})
       .catch(error => console.log(error));
   }, [isAvailable]);

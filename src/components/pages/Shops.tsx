@@ -55,7 +55,7 @@ function Shops() {
   */
   useEffect(() => {
     isFirstRef.current = false;
-    axios.get(`http://localhost:3001/api/v1/shops`)
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops`)
          .then(res => {setShops(res.data)
                console.log("Rails Api からデータを取得", res);
               })

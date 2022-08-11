@@ -9,15 +9,26 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
 
+type USER = {
+  id: number;
+  name: string;
+  email: string;
+}
+const defaultUser = {
+  id: 0,
+  name: "",
+  email: ""
+}
+
 export const LoggedInStatusContext = createContext("")
-export const UserContext = createContext({})
+export const UserContext = createContext<USER>(defaultUser)
 export const HandleLoginContext = createContext<((data: any) => void) | undefined>(undefined);
 export const HandleLogoutContext = createContext<(() => void) | undefined>(undefined);
 
 export default function App() {
 
   const [loggedInStatus, setLoggedInStatus] = useState("未ログイン")
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(defaultUser)
 
   const handleLogin = (data: any) => {
     setLoggedInStatus(data.user.name)
@@ -25,7 +36,7 @@ export default function App() {
   }
   const handleLogout = () => {
     setLoggedInStatus("未ログイン")
-    setUser({})
+    setUser(defaultUser)
   }
 
   useEffect(() => {
@@ -33,7 +44,7 @@ export default function App() {
   })
 
   const checkLoginStatus = () => {
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/show`, { withCredentials: true }
+    axios.get(`http://localhost:3001/api/v1/sessions/show`, { withCredentials: true }
     ).then(response => {
       if (response.data.logged_in && loggedInStatus === "未ログイン") {
         setLoggedInStatus(response.data.user.name)
@@ -41,10 +52,10 @@ export default function App() {
         console.log("ログインなう")
       } else if (!response.data.logged_in && loggedInStatus !== "未ログイン") {
         setLoggedInStatus("未ログイン")
-        setUser({})
+        setUser(defaultUser)
         console.log("未ログイン")
       }
-      console.log("ログイン状況", response)
+      console.log("ログイン状況", loggedInStatus, user, response)
     }).catch(error => {
       console.log("ログインエラー", error)
     })

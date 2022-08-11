@@ -32,7 +32,7 @@ export default function Login() {
   return (
     <div>
       <p>ログイン</p>
-      <form onSubmit={handleSubmit}> 
+      <form onSubmit={handleSubmit}>
         <input
           type="email"
           name="email"

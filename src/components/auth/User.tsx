@@ -32,17 +32,17 @@ function User() {
         <h2>ログイン状態: {loggedInStatus}</h2>
 
         {loggedInStatus === "未ログイン" ?
-        <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
-          <Registration  />
-          <Login />
-        </HandleSuccessfulAuthentication.Provider>
+          <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
+            <Registration  />
+            <Login />
+          </HandleSuccessfulAuthentication.Provider>
         :
-        <Button onClick={handleLogoutClick} 
-                variant="outlined" 
-                color="inherit"
-        >
-          ログアウト
-        </Button>
+          <Button onClick={handleLogoutClick} 
+                  variant="outlined" 
+                  color="inherit"
+          >
+            ログアウト
+          </Button>
         }
       </>
     );

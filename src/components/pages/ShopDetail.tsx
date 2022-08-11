@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import axios from "axios";
-import { LoggedInStatusContext } from '../../App'
+import { LoggedInStatusContext, UserContext } from '../../App'
 
 import { styled } from '@mui/material/styles';
 import Container from "@mui/material/Container";
@@ -56,14 +56,39 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 function ShopDetail() {
 
   const loggedInStatus = useContext(LoggedInStatusContext)
-  
-  const [favoriteData, setFavoriteData] = useState("a")
-
-  const handleFavoriteClick = () => {}
-  const handleDeleteFavoriteClick = () => {}
+  const user = useContext(UserContext)
 
   // params id を受け取る
   const { id } = useParams();
+
+  const defaultFavoriteData = {
+    id: 0,
+    user_id: 0,
+    shop_id: 0
+  }
+  const [favoriteData, setFavoriteData] = useState(defaultFavoriteData)
+
+  // お気に入り登録機能
+  const handleFavoriteClick = () => {
+    axios.post(`http://localhost:3001/api/v1/favorites`, { user_id: user.id, shop_id: id })
+        .then(res => {
+          console.log("お気に入り登録", res.data)
+          setFavoriteData(res.data.favorite)
+          console.log(favoriteData)
+        })
+        .catch(error => console.log("エラー", error))
+  }
+
+  // お気に入り削除機能
+  const handleDeleteFavoriteClick = () => {
+    axios.delete(`http://localhost:3001/api/v1/favorites/${{favorite_id: favoriteData.id}}`)
+        .then(res => {
+          console.log("お気に入り削除", res.data)
+          setFavoriteData(defaultFavoriteData)
+          console.log(favoriteData)
+        })
+        .catch(error => console.log("エラー", error))
+  }
 
   // 折り畳み機能 on/off
   const [expanded, setExpanded] = React.useState(false);
@@ -90,13 +115,13 @@ function ShopDetail() {
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
     // isFirstRef.current = false;
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops/${id}`)
-         .then(res => 
-              {setShop(res.data.shop)
-               setFavoriteData(res.data.favorite)
-               console.log("Rails Api からデータを取得", res.data);
-              })
-         .catch(error => console.log(error))
+    axios.get(`http://localhost:3001/api/v1/shops/${id}`)
+      .then(res => {
+        setShop(res.data.shop)
+        setFavoriteData(res.data.favorite)
+        console.log("Rails Api からデータを取得", res.data);
+      })
+      .catch(error => console.log("データの取得に失敗", error))
   },[id]);
 
   // <InfoWindow詳細設定>
@@ -185,37 +210,24 @@ function ShopDetail() {
                 <CardHeader
                   className="card"
                   title={shop?.name}
+                  // subheader={shop.address}
                 />
               :
-                {favoriteData === "a" ?
-                  <CardHeader
-                    className="card"
-                    title={shop?.name}
-                    action={
+                <CardHeader
+                  className="card"
+                  title={shop?.name}
+                  action={
+                    <>
                       <IconButton 
                         aria-label="settings"
-                        // color="inherit"
-                        onClick={handleFavoriteClick}
+                        onClick={favoriteData === defaultFavoriteData ? handleDeleteFavoriteClick : handleFavoriteClick}
                       >
-                        <StarIcon />
+                        <StarIcon color={favoriteData === defaultFavoriteData ? 'inherit' : 'primary'} />
                       </IconButton>
-                    }
-                  />
-                :
-                  <CardHeader
-                    className="card"
-                    title={shop?.name}
-                    action={
-                      <IconButton 
-                        aria-label="settings"
-                        color="inherit"
-                        onClick={handleDeleteFavoriteClick}
-                      >
-                        <StarIcon />
-                      </IconButton>
-                    }
-                  />
-                }
+                    </>
+                  } 
+                  // subheader={shop.address}
+                />
               }
               <CardMedia
                 component={"img"}
@@ -246,19 +258,16 @@ function ShopDetail() {
 
               </CardContent>
               <CardActions disableSpacing>
-                {loggedInStatus === "未ログイン" ?
-                  <>
-                  </>
-                :
-                  <>
-                    <IconButton aria-label="add to favorites">
-                      <FavoriteIcon />
-                    </IconButton>
-                    <IconButton aria-label="share">
-                      <ChatBubbleIcon />
-                    </IconButton>
-                  </>
-                }
+              {loggedInStatus === "未ログイン" &&
+                <>
+                  <IconButton aria-label="add to favorites">
+                    <FavoriteIcon />
+                  </IconButton>
+                  <IconButton aria-label="share">
+                    <ChatBubbleIcon />
+                  </IconButton>
+                </>
+              }
                 <div style={{ flexGrow: 1 }}></div>
                 <Typography>
                   Googel Map で確認する

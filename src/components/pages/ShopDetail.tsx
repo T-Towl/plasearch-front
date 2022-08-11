@@ -115,7 +115,7 @@ function ShopDetail() {
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
     // isFirstRef.current = false;
-    axios.get(`http://localhost:3001/api/v1/shops/${id}`)
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops/${id}`)
       .then(res => {
         setShop(res.data.shop)
         setFavoriteData(res.data.favorite)
@@ -220,7 +220,7 @@ function ShopDetail() {
                     <>
                       <IconButton 
                         aria-label="settings"
-                        onClick={favoriteData === defaultFavoriteData ? handleDeleteFavoriteClick : handleFavoriteClick}
+                        onClick={favoriteData === defaultFavoriteData ? handleFavoriteClick : handleDeleteFavoriteClick}
                       >
                         <StarIcon color={favoriteData === defaultFavoriteData ? 'inherit' : 'primary'} />
                       </IconButton>

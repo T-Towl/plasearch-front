@@ -132,7 +132,7 @@ function ShopDetail() {
       })
       .catch(error => console.log("データの取得に失敗", error))
     console.log("お気に入り情報", favoriteData.id)
-  },[loggedInStatus]);
+  },[id, loggedInStatus]);
 
   // <InfoWindow詳細設定>
   const [size, setSize] = useState<google.maps.Size>();

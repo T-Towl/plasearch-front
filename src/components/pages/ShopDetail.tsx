@@ -73,19 +73,25 @@ function ShopDetail() {
     axios.post(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites`, { user_id: user.id, shop_id: id })
         .then(res => {
           console.log("お気に入り登録", res.data)
-          setFavoriteData(res.data.favorite)
-          console.log(favoriteData)
+          if (res.data.favorited) {
+            setFavoriteData(res.data.favorite)
+          } else {
+          console.log("お気に入り登録失敗", res.data.status)
+          }
         })
         .catch(error => console.log("エラー", error))
   }
 
   // お気に入り削除機能
   const handleDeleteFavoriteClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites/${{favorite_id: favoriteData.id}}`)
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites/${{favorite_id: favoriteData.id}}`, {params: {favorite_id: favoriteData.id}})
         .then(res => {
-          console.log("お気に入り削除", res.data)
-          setFavoriteData(defaultFavoriteData)
-          console.log(favoriteData)
+          if (res.data.deleted) {
+            console.log("お気に入り削除", res.data)
+            setFavoriteData(defaultFavoriteData)
+          } else {
+          console.log("お気に入り削除失敗", res.data.errors)
+          }
         })
         .catch(error => console.log("エラー", error))
   }
@@ -114,15 +120,19 @@ function ShopDetail() {
 
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
+    console.log("ユーザーID", user.id)
     // isFirstRef.current = false;
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops/${id}`)
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops/${id}`, {params: { user_id: user.id, shop_id: id}})
       .then(res => {
         setShop(res.data.shop)
-        setFavoriteData(res.data.favorite)
+        if (res.data.favorited) {
+          !!res.data.favorite && setFavoriteData(res.data.favorite)
+        }
         console.log("Rails Api からデータを取得", res.data);
       })
       .catch(error => console.log("データの取得に失敗", error))
-  },[id]);
+    console.log("お気に入り情報", favoriteData.id)
+  },[loggedInStatus]);
 
   // <InfoWindow詳細設定>
   const [size, setSize] = useState<google.maps.Size>();
@@ -220,9 +230,9 @@ function ShopDetail() {
                     <>
                       <IconButton 
                         aria-label="settings"
-                        onClick={favoriteData === defaultFavoriteData ? handleFavoriteClick : handleDeleteFavoriteClick}
+                        onClick={favoriteData.id === defaultFavoriteData.id ? handleFavoriteClick : handleDeleteFavoriteClick}
                       >
-                        <StarIcon color={favoriteData === defaultFavoriteData ? 'inherit' : 'primary'} />
+                        <StarIcon color={favoriteData.id === defaultFavoriteData.id ? 'inherit' : 'primary'} />
                       </IconButton>
                     </>
                   } 

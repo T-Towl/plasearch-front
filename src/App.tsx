@@ -9,12 +9,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
 
-type USER = {
-  id: number,
-  email: string,
-  name: string,
-  password_digest: string,
-  created_at: string,
+type User = {
+  id: number
+  email: string
+  name: string
+  password_digest: string
+  created_at: string
   updated_at: string
 }
 const defaultUser = {
@@ -27,7 +27,7 @@ const defaultUser = {
 }
 
 export const LoggedInStatusContext = createContext("")
-export const UserContext = createContext<USER>(defaultUser)
+export const UserContext = createContext<User>(defaultUser)
 export const HandleLoginContext = createContext<((data: any) => void) | undefined>(undefined);
 export const HandleLogoutContext = createContext<(() => void) | undefined>(undefined);
 

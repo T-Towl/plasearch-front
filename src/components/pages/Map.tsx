@@ -42,17 +42,17 @@ function Map() {
   const [position, setPosition] = useState({ lat: 0, lng: 0 });
   const [shops, setShops] = useState<Shop[]>([]);
   type Shop = {
-    id: number;
-    name: string;
-    lat: number;
-    lng: number;
-    phone_number: string;
-    post_code: string;
-    address: string;
-    opening_hours: string;
-    photo_reference: string;
-    rating: number;
-    place_id: string;
+    id: number
+    name: string
+    lat: number
+    lng: number
+    phone_number: string
+    post_code: string
+    address: string
+    opening_hours: string
+    photo_reference: string
+    rating: number
+    place_id: string
   };
 
   // useEffectが実行されているかどうかを判定するために用意しています
@@ -70,7 +70,7 @@ function Map() {
     getCurrentPosition();
     // ↓Railsからデータを取得
     axios.get(
-      `${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops`)
+      `${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops`)
       .then(res => {setShops(res.data); console.log("Rails Api からデータを取得");})
       .catch(error => console.log(error));
   }, [isAvailable]);

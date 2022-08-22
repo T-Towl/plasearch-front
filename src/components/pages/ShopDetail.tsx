@@ -70,7 +70,7 @@ function ShopDetail() {
 
   // お気に入り登録機能
   const handleFavoriteClick = () => {
-    axios.post(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites`, { user_id: user.id, shop_id: id })
+    axios.post(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites`, { user_id: user.id, shop_id: id })
         .then(res => {
           console.log("お気に入り登録", res.data)
           if (res.data.favorited) {
@@ -84,7 +84,7 @@ function ShopDetail() {
 
   // お気に入り削除機能
   const handleDeleteFavoriteClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites/${{favorite_id: favoriteData.id}}`, {params: {favorite_id: favoriteData.id}})
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites/${{favorite_id: favoriteData.id}}`, {params: {favorite_id: favoriteData.id}})
         .then(res => {
           if (res.data.deleted) {
             console.log("お気に入り削除", res.data)
@@ -105,24 +105,23 @@ function ShopDetail() {
   // shopデータの型
   const [shop, setShop] = useState<Shop | undefined>(undefined);
   type Shop = {
-    id: number;
-    name: string;
-    lat: number;
-    lng: number;
-    phone_number: string;
-    post_code: string;
-    address: string;
-    opening_hours: string;
-    photo_reference: string;
-    rating: number;
-    place_id: string;
+    id: number
+    name: string
+    lat: number
+    lng: number
+    phone_number: string
+    post_code: string
+    address: string
+    opening_hours: string
+    photo_reference: string
+    rating: number
+    place_id: string
   };
 
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
     console.log("ユーザーID", user.id)
-    // isFirstRef.current = false;
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops/${id}`, {params: { user_id: user.id, shop_id: id}})
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops/${id}`, {params: { user_id: user.id, shop_id: id}})
       .then(res => {
         setShop(res.data.shop)
         if (res.data.favorited) {
@@ -220,7 +219,6 @@ function ShopDetail() {
                 <CardHeader
                   className="card"
                   title={shop?.name}
-                  // subheader={shop.address}
                 />
               :
                 <CardHeader
@@ -236,7 +234,7 @@ function ShopDetail() {
                       </IconButton>
                     </>
                   } 
-                  // subheader={shop.address}
+                  // subheader={}
                 />
               }
               <CardMedia

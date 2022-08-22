@@ -38,9 +38,6 @@ function About() {
           <Button variant="outlined" component={Link} to="/shops">
             キーワードから探す
           </Button>
-          {/* <Button variant="outlined" component={Link} to="/search">
-            Seach Sample
-          </Button> */}
         </Stack>
       </Container>
     </Box>

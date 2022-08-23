@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Defaults.scss"
-import { LoggedInStatusContext, HandleLogoutContext } from '../../App'
+import { LoggedInStatusContext, HandleLogoutContext, UserContext } from '../../App'
 import { Link } from "react-router-dom";
 import axios from 'axios'
 
@@ -19,9 +19,10 @@ function Header() {
 
   const loggedInStatus = useContext(LoggedInStatusContext)
   const handleLogout = useContext(HandleLogoutContext)
+  const user = useContext(UserContext)
 
   const handleLogoutClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/delete`, { withCredentials: true }
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user.id}}`, { withCredentials: true }
       ).then(response => {
         !!handleLogout && handleLogout()
       }).catch(error => console.log("ログアウトエラー", error))

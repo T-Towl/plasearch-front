@@ -13,7 +13,7 @@ export default function Registration() {
   const handleSuccessfulAuthentication = useContext(HandleSuccessfulAuthentication)
 
   const handleSubmit = (event: any) => {
-    axios.post(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/users`,
+    axios.post(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/users`,
       {
         user: {
           name: name,

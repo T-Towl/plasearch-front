@@ -9,7 +9,7 @@ export default function Login() {
   const handleSuccessfulAuthentication = useContext(HandleSuccessfulAuthentication)
 
   const handleSubmit = (event: any) => {
-    axios.post(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions`,
+    axios.post(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/sessions`,
       {
         user: {
           email: email,

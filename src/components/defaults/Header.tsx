@@ -22,7 +22,7 @@ function Header() {
   const user = useContext(UserContext)
 
   const handleLogoutClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user.id}}`, { withCredentials: true }
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/sessions/${{user_id: user.id}}`, { withCredentials: true }
       ).then(response => {
         !!handleLogout && handleLogout()
       }).catch(error => console.log("ログアウトエラー", error))

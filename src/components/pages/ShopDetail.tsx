@@ -72,7 +72,7 @@ function ShopDetail() {
   const handleFavoriteClick = () => {
     axios.post(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites`, { user_id: user.id, shop_id: id })
         .then(res => {
-          console.log("お気に入り登録", res.data)
+          console.log("お気に入り登録", res)
           if (res.data.favorited) {
             setFavoriteData(res.data.favorite)
           } else {
@@ -124,10 +124,10 @@ function ShopDetail() {
     axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops/${id}`, {params: { user_id: user.id, shop_id: id}})
       .then(res => {
         setShop(res.data.shop)
-        if (res.data.favorited) {
+        if (res.status === 200) {
           !!res.data.favorite && setFavoriteData(res.data.favorite)
         }
-        console.log("Rails Api からデータを取得", res.data);
+        console.log("Rails Api からデータを取得", res);
       })
       .catch(error => console.log("データの取得に失敗", error))
     console.log("お気に入り情報", favoriteData.id)

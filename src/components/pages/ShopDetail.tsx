@@ -73,10 +73,10 @@ function ShopDetail() {
     axios.post(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites`, { user_id: user.id, shop_id: id })
         .then(res => {
           console.log("お気に入り登録", res)
-          if (res.data.favorited) {
+          if (res.status === 201) {
             setFavoriteData(res.data.favorite)
           } else {
-          console.log("お気に入り登録失敗", res.data.status)
+          console.log("お気に入り登録失敗", res)
           }
         })
         .catch(error => console.log("エラー", error))
@@ -86,8 +86,8 @@ function ShopDetail() {
   const handleDeleteFavoriteClick = () => {
     axios.delete(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites/${{favorite_id: favoriteData.id}}`, {params: {favorite_id: favoriteData.id}})
         .then(res => {
-          if (res.data.deleted) {
-            console.log("お気に入り削除", res.data)
+          if (res.status === 200) {
+            console.log("お気に入り削除", res)
             setFavoriteData(defaultFavoriteData)
           } else {
           console.log("お気に入り削除失敗", res.data.errors)

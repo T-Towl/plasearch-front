@@ -70,7 +70,8 @@ function ShopDetail() {
 
   // お気に入り登録機能
   const handleFavoriteClick = () => {
-    axios.post(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites`, { user_id: user.id, shop_id: id })
+    axios.post(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites`, 
+              {params: {shop_id: id}, withCredentials: true})
         .then(res => {
           console.log("お気に入り登録", res)
           if (res.status === 201) {
@@ -84,13 +85,14 @@ function ShopDetail() {
 
   // お気に入り削除機能
   const handleDeleteFavoriteClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites/${{favorite_id: favoriteData.id}}`, {params: {favorite_id: favoriteData.id}})
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites/${{favorite_id: favoriteData.id}}`,
+                {params: {favorite_id: favoriteData.id}, withCredentials: true})
         .then(res => {
           if (res.status === 200) {
             console.log("お気に入り削除", res)
             setFavoriteData(defaultFavoriteData)
           } else {
-          console.log("お気に入り削除失敗", res.data.errors)
+          console.log("お気に入り削除失敗", res)
           }
         })
         .catch(error => console.log("エラー", error))
@@ -121,13 +123,13 @@ function ShopDetail() {
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
     console.log("ユーザーID", user.id)
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops/${id}`, {params: { user_id: user.id, shop_id: id}})
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops/${id}`, {withCredentials: true})
       .then(res => {
         setShop(res.data.shop)
         if (res.status === 200) {
           !!res.data.favorite && setFavoriteData(res.data.favorite)
         }
-        console.log("Rails Api からデータを取得", res);
+        console.log("Rails Api からshopデータを取得", res);
       })
       .catch(error => console.log("データの取得に失敗", error))
     console.log("お気に入り情報", favoriteData.id)

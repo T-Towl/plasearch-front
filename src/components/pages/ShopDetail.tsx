@@ -69,9 +69,9 @@ function ShopDetail() {
   const [favoriteData, setFavoriteData] = useState(defaultFavoriteData)
 
   // お気に入り登録機能
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = () => {     
     axios.post(`http://localhost:3001/api/v1/favorites`, 
-              {params: {shop_id: id}, withCredentials: true})
+              {shop_id: id}, {withCredentials: true})
         .then(res => {
           console.log("お気に入り登録", res)
           if (res.status === 201) {
@@ -85,10 +85,10 @@ function ShopDetail() {
 
   // お気に入り削除機能
   const handleDeleteFavoriteClick = () => {
-    axios.delete(`http://localhost:3001/api/v1/favorites/${{favorite_id: favoriteData.id}}`
-                , {params: {favorite_id: favoriteData.id}, withCredentials: true})
+    axios.delete(`http://localhost:3001/api/v1/favorites/${favoriteData.id}`,
+                {withCredentials: true})
         .then(res => {
-          if (res.status === 200) {
+          if (res.status === 204) {
             console.log("お気に入り削除", res)
             setFavoriteData(defaultFavoriteData)
           } else {
@@ -124,7 +124,7 @@ function ShopDetail() {
   useEffect(() => {
     console.log("ユーザーID", user.id)
     axios.get(`http://localhost:3001/api/v1/shops/${id}`, 
-             {withCredentials: true})
+              {withCredentials: true})
       .then(res => {
         setShop(res.data.shop)
         if (res.status === 200) {

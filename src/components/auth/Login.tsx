@@ -18,13 +18,12 @@ export default function Login() {
       },
       { withCredentials: true }
     ).then(response => {
-      if (response.data.logged_in) {
+      if (response.status === 201) {
         !!handleSuccessfulAuthentication && handleSuccessfulAuthentication(response.data)
-        console.log("ログイン成功")
+        console.log("ログイン成功", response)
       }
-      console.log("login response: ", response)
     }).catch(error => {
-      console.log("registration error", error)
+      console.log("ログイン失敗", error)
     })
     event.preventDefault()
   }

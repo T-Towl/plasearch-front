@@ -24,13 +24,12 @@ export default function Registration() {
       },
       { withCredentials: true }
     ).then(response => {
-      if (response.data.status === 'created') {
+      if (response.status === 201) {
         !!handleSuccessfulAuthentication && handleSuccessfulAuthentication(response.data)
-        console.log("ユーザー登録完了")
+        console.log("ユーザー登録完了", response)
       }
-      console.log("registration res", response)
     }).catch(error => {
-      console.log("registration error", error)
+      console.log("ユーザー登録失敗", error, error.response.data.errors)
     })
     event.preventDefault()
   }

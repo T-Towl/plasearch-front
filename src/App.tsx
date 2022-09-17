@@ -57,6 +57,10 @@ export default function App() {
       if (response.status === 200 && loggedInStatus === "未ログイン") {
         handleLogin(response.data)
         console.log("ログインなう", response, loggedInStatus)
+      } else if (response.status === 304 && loggedInStatus !== "未ログイン") {
+        setLoggedInStatus("未ログイン")
+        setUser(defaultUser)
+        console.log("未ログイン", response, loggedInStatus)
       } else {
         if (response.status === 200) {
           console.log("ログインなう", response, loggedInStatus)

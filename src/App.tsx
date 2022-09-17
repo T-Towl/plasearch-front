@@ -50,20 +50,23 @@ export default function App() {
   })
 
   const checkLoginStatus = () => {
+    console.log("ログイン状況", loggedInStatus, user.id)
     axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/sessions/${{user_id: user.id}}`, { withCredentials: true }
     ).then(response => {
-      if (response.data.logged_in && loggedInStatus === "未ログイン") {
-        setLoggedInStatus(response.data.user.name)
-        setUser(response.data.user)
-        console.log("ログインなう")
-      } else if (!response.data.logged_in && loggedInStatus !== "未ログイン") {
-        setLoggedInStatus("未ログイン")
-        setUser(defaultUser)
-        console.log("未ログイン")
+      console.log("ユーザー", user.id)
+      if (response.status === 200 && loggedInStatus === "未ログイン") {
+        handleLogin(response.data)
+        console.log("ログインなう", response, loggedInStatus)
+      } else {
+        if (response.status === 200) {
+          console.log("ログインなう", response, loggedInStatus)
+        } else {
+          console.log("未ログイン", response, loggedInStatus)
+        }
       }
-      console.log("ログイン状況", loggedInStatus, user, response)
     }).catch(error => {
-      console.log("ログインエラー", error)
+      handleLogout()
+      console.log("ログインエラー", loggedInStatus, error)
     })
   }
 

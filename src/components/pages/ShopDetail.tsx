@@ -70,7 +70,7 @@ function ShopDetail() {
 
   // お気に入り登録機能
   const handleFavoriteClick = () => {
-    axios.post(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites`, 
+    axios.post(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites`, 
               {shop_id: id}, {withCredentials: true})
         .then(res => {
           console.log("お気に入り登録", res)
@@ -85,7 +85,7 @@ function ShopDetail() {
 
   // お気に入り削除機能
   const handleDeleteFavoriteClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/favorites/${favoriteData.id}`,
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites/${favoriteData.id}`,
                 {withCredentials: true})
         .then(res => {
           if (res.status === 204) {
@@ -123,7 +123,7 @@ function ShopDetail() {
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
     console.log("ユーザーID", user.id)
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops/${id}`, {withCredentials: true})
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops/${id}`, {withCredentials: true})
       .then(res => {
         setShop(res.data.shop)
         if (res.status === 200) {

@@ -51,7 +51,8 @@ export default function App() {
 
   const checkLoginStatus = () => {
     console.log("ログイン状況", loggedInStatus, user.id)
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/sessions/${{user_id: user.id}}`, { withCredentials: true }
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user.id}}`, 
+             { withCredentials: true }
     ).then(response => {
       console.log("ユーザー", user.id)
       if (response.status === 200 && loggedInStatus === "未ログイン") {

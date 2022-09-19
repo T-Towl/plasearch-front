@@ -55,7 +55,7 @@ function Shops() {
   */
   useEffect(() => {
     isFirstRef.current = false;
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN_DEVELOPMENT}/api/v1/shops`)
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops`)
          .then(res => {setShops(res.data)
                console.log("Rails Api からSHOPデータ一覧を取得", res);
               })

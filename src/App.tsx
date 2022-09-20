@@ -9,6 +9,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
 
+// ユーザー型付け
 type User = {
   id: number
   email: string
@@ -28,19 +29,21 @@ export default function App() {
   const [loggedInStatus, setLoggedInStatus] = useState("未ログイン")
   const [user, setUser] = useState<User | undefined>(undefined)
 
+  // ログイン機能
   const handleLogin = (data: any) => {
     setLoggedInStatus(data.user.name)
     setUser(data.user)
   }
+  // ログアウト機能
   const handleLogout = () => {
     setLoggedInStatus("未ログイン")
     setUser(undefined)
   }
-
+  // レンダー後にログイン状態をチェック
   useEffect(() => {
     checkLoginStatus()
   })
-
+  // ログインチェック機能
   const checkLoginStatus = () => {
     console.log("ログイン状況", loggedInStatus, user?.id)
     axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user?.id}}`, 

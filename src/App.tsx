@@ -17,24 +17,16 @@ type User = {
   created_at: string
   updated_at: string
 }
-const defaultUser = {
-  id: 0,
-  email: "",
-  name: "",
-  password_digest: "",
-  created_at: "",
-  updated_at: ""
-}
 
 export const LoggedInStatusContext = createContext("")
-export const UserContext = createContext<User>(defaultUser)
+export const UserContext = createContext<User | undefined>(undefined)
 export const HandleLoginContext = createContext<((data: any) => void) | undefined>(undefined);
 export const HandleLogoutContext = createContext<(() => void) | undefined>(undefined);
 
 export default function App() {
 
   const [loggedInStatus, setLoggedInStatus] = useState("未ログイン")
-  const [user, setUser] = useState(defaultUser)
+  const [user, setUser] = useState<User | undefined>(undefined)
 
   const handleLogin = (data: any) => {
     setLoggedInStatus(data.user.name)
@@ -42,7 +34,7 @@ export default function App() {
   }
   const handleLogout = () => {
     setLoggedInStatus("未ログイン")
-    setUser(defaultUser)
+    setUser(undefined)
   }
 
   useEffect(() => {
@@ -50,17 +42,17 @@ export default function App() {
   })
 
   const checkLoginStatus = () => {
-    console.log("ログイン状況", loggedInStatus, user.id)
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user.id}}`, 
+    console.log("ログイン状況", loggedInStatus, user?.id)
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user?.id}}`, 
              { withCredentials: true }
     ).then(response => {
-      console.log("ユーザー", user.id)
+      console.log("ユーザー", user?.id)
       if (response.status === 200 && loggedInStatus === "未ログイン") {
         handleLogin(response.data)
         console.log("ログインなう", response, loggedInStatus)
       } else if (response.status === 304 && loggedInStatus !== "未ログイン") {
         setLoggedInStatus("未ログイン")
-        setUser(defaultUser)
+        setUser(undefined)
         console.log("未ログイン", response, loggedInStatus)
       } else {
         if (response.status === 200) {

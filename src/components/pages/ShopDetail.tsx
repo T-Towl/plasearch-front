@@ -122,7 +122,7 @@ function ShopDetail() {
 
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
-    console.log("ユーザーID", user.id)
+    console.log("ユーザーID", user?.id)
     axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops/${id}`, {withCredentials: true})
       .then(res => {
         setShop(res.data.shop)
@@ -133,7 +133,7 @@ function ShopDetail() {
       })
       .catch(error => console.log("データの取得に失敗", error))
     console.log("お気に入り情報", favoriteData.id)
-  },[favoriteData.id, id, user.id])
+  },[favoriteData.id, id, user?.id])
 
   // <InfoWindow詳細設定>
   const [size, setSize] = useState<google.maps.Size>();

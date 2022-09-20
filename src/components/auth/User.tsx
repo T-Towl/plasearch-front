@@ -22,7 +22,7 @@ function User() {
     }
 
     const handleLogoutClick = () => {
-      axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user.id}}`
+      axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user?.id}}`, { withCredentials: true }
         ).then(response => {
           !!handleLogout && handleLogout()
           console.log("ログアウト", response)

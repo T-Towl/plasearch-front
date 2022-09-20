@@ -22,7 +22,7 @@ function Header() {
   const user = useContext(UserContext)
 
   const handleLogoutClick = () => {
-    axios.delete(`http://localhost:3001/api/v1/sessions/${{user_id: user.id}}`
+    axios.delete(`http://localhost:3001/api/v1/sessions/${{user_id: user?.id}}`, { withCredentials: true }
       ).then(response => {
         !!handleLogout && handleLogout()
         console.log("ログアウト", response)

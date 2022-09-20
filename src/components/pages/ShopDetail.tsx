@@ -61,11 +61,7 @@ function ShopDetail() {
   // params id を受け取る
   const { id } = useParams();
 
-  const defaultFavoriteData = {
-    id: 0,
-    user_id: 0,
-    shop_id: 0
-  }
+  // お気に入りデータ定義
   type FavoriteData = {
     id: number
     user_id: number

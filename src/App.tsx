@@ -17,14 +17,6 @@ type User = {
   created_at: string
   updated_at: string
 }
-const defaultUser = {
-  id: 0,
-  email: "",
-  name: "",
-  password_digest: "",
-  created_at: "",
-  updated_at: ""
-}
 
 export const LoggedInStatusContext = createContext("")
 export const UserContext = createContext<User | undefined>(undefined)

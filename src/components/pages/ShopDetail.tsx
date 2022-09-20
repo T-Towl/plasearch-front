@@ -61,12 +61,12 @@ function ShopDetail() {
   // params id を受け取る
   const { id } = useParams();
 
-  const defaultFavoriteData = {
-    id: 0,
-    user_id: 0,
-    shop_id: 0
+  type FavoriteData = {
+    id: number
+    user_id: number
+    shop_id: number
   }
-  const [favoriteData, setFavoriteData] = useState(defaultFavoriteData)
+  const [favoriteData, setFavoriteData] = useState<FavoriteData | undefined>(undefined)
 
   // お気に入り登録機能
   const handleFavoriteClick = () => {
@@ -85,12 +85,12 @@ function ShopDetail() {
 
   // お気に入り削除機能
   const handleDeleteFavoriteClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites/${favoriteData.id}`,
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites/${favoriteData?.id}`,
                 {withCredentials: true})
         .then(res => {
           if (res.status === 204) {
             console.log("お気に入り削除", res)
-            setFavoriteData(defaultFavoriteData)
+            setFavoriteData(undefined)
           } else {
           console.log("お気に入り削除失敗", res)
           }
@@ -132,8 +132,8 @@ function ShopDetail() {
         console.log("Rails Api からshopデータを取得", res);
       })
       .catch(error => console.log("データの取得に失敗", error))
-    console.log("お気に入り情報", favoriteData.id)
-  },[favoriteData.id, id, user?.id])
+    console.log("お気に入り情報", favoriteData?.id)
+  },[favoriteData?.id, id, user?.id])
 
   // <InfoWindow詳細設定>
   const [size, setSize] = useState<google.maps.Size>();
@@ -230,9 +230,9 @@ function ShopDetail() {
                     <>
                       <IconButton 
                         aria-label="settings"
-                        onClick={favoriteData.id === defaultFavoriteData.id ? handleFavoriteClick : handleDeleteFavoriteClick}
+                        onClick={favoriteData?.id === undefined ? handleFavoriteClick : handleDeleteFavoriteClick}
                       >
-                        <StarIcon color={favoriteData.id === defaultFavoriteData.id ? 'inherit' : 'primary'} />
+                        <StarIcon color={favoriteData?.id === undefined ? 'inherit' : 'primary'} />
                       </IconButton>
                     </>
                   } 

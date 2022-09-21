@@ -30,7 +30,7 @@ function Footer() {
           color="text.secondary"
           component="p"
         >
-          Let's build a Gunpla!!
+          Let's build Gunpla!!
         </Typography>
         <Copyright />
       </Box>

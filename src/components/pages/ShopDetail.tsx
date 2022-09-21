@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
-// import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import axios from "axios";
 import { LoggedInStatusContext, UserContext } from '../../App'
@@ -15,6 +14,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardHeader from '@mui/material/CardHeader';
 import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
+import Stack from "@mui/material/Stack";
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
@@ -55,6 +55,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 function ShopDetail() {
 
+  const navigation = useNavigate();
   const loggedInStatus = useContext(LoggedInStatusContext)
   const user = useContext(UserContext)
 
@@ -204,6 +205,18 @@ function ShopDetail() {
 
   return (
     <>
+      <Container sx={{ py: 2 }}>
+        <Stack
+              sx={{ pt: 1 }}
+              direction="row"
+              spacing={2}
+              justifyContent="left"
+        >
+          <Button variant="contained" onClick={ () => navigation(-1) }>
+            戻る
+          </Button>
+        </Stack>
+      </Container>
       <Container sx={{ py: 8 }} maxWidth="md">
         <Grid container 
           spacing={4} 

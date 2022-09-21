@@ -18,7 +18,7 @@ function Copyright() {
 
 function Footer() {
   return (
-    <div>
+    <>
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Pla search ‐プラサーチ‐
@@ -29,11 +29,11 @@ function Footer() {
           color="text.secondary"
           component="p"
         >
-          Let's build a Gunpla!!
+          Let's build Gunpla!!
         </Typography>
         <Copyright />
       </Box>
-    </div>
+    </>
   );
 }
 

@@ -15,7 +15,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CardHeader from '@mui/material/CardHeader';
 // import Collapse from '@mui/material/Collapse';
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import IconButton from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
@@ -115,6 +116,18 @@ function Shops() {
 
   return (
     <>
+      <Container sx={{ py: 2 }}>
+        <Stack
+              sx={{ pt: 1 }}
+              direction="row"
+              justifyContent="right"
+        >
+          <Button variant="contained" component={Link} to="/map">
+            マップから探す
+          </Button>
+        </Stack>
+      </Container>
+
       <Container sx={{ py: 8 }} maxWidth="md">
         <Grid container spacing={0} direction="column" alignItems="center">
           <Grid item xs={3}>
@@ -122,11 +135,11 @@ function Shops() {
               id="field"
               color="secondary"
               variant="outlined"
-              label="enter keywords"
+              label="地名などを入力"
               onChange={(e) => setKeyword(e.target.value)}
               onClick={() => setShowLists(true)}
             />
-            <Button variant="contained" onClick={Search}>
+            <Button variant="contained" onClick={Search} sx={{ py: 2 }}>
               検索
             </Button>
           </Grid>
@@ -149,6 +162,11 @@ function Shops() {
                   className="card"
                   component={Link}
                   to={`/shopdetail/${Number(shop?.id)}`}
+                  sx={{
+                    height: "200px",
+                    width: "100%",
+                    pt: "10%"
+                  }}
                   action={
                     <IconButton 
                       aria-label="settings" 

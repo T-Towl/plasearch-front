@@ -30,7 +30,7 @@ function Header() {
   }
 
   return (
-    <div>
+    <>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
@@ -78,17 +78,17 @@ function Header() {
               <Typography color="inherit" sx={{ mr: 1 }}>
                 Login User：{loggedInStatus}
               </Typography>
-              <Button onClick={handleLogoutClick} 
+              <Button component={Link} to="/user" 
                       variant="outlined" 
                       color="inherit"
               >
-                ログアウト
+                Sign out
               </Button>
             </>  
           }
         </Toolbar>
       </AppBar>
-    </div>
+    </>
   );
 }
 

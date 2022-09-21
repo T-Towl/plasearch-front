@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from "react";
 import axios from "axios";
-import './App.css';
+import './App.scss';
 
 import Header from "./components/defaults/Header";
 import Footer from "./components/defaults/Footer";
@@ -74,6 +74,7 @@ export default function App() {
               <UserContext.Provider value={user}>
                 <Header />
                 <Main />
+                <div className="push"></div>
                 <Footer />
               </UserContext.Provider>
             </LoggedInStatusContext.Provider>

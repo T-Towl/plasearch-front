@@ -1,4 +1,5 @@
 import React from "react";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -18,7 +19,7 @@ function Copyright() {
 
 function Footer() {
   return (
-    <div>
+    <>
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Pla search ‐プラサーチ‐
@@ -33,7 +34,7 @@ function Footer() {
         </Typography>
         <Copyright />
       </Box>
-    </div>
+    </>
   );
 }
 

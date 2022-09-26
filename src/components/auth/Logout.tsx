@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import axios from 'axios'
-import { UserContext, HandleLogoutContext } from '../../App'
+import { UserContext } from '../../App'
 import { HandleUnsuccessfulAuthentication } from "./User"
 
 import Avatar from '@mui/material/Avatar';
@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography';
 export default function Logout() {
   const handleUnsuccessfulAuthentication = useContext(HandleUnsuccessfulAuthentication)
   const user = useContext(UserContext)
-  const handleLogout = useContext(HandleLogoutContext)
 
   // const handleSubmit = () => {
   //   axios.delete(`http://localhost:3001/api/v1/sessions/${{user_id: user?.id}}`, { withCredentials: true }
@@ -24,7 +23,7 @@ export default function Logout() {
   const handleSubmit = () => {
     axios.delete(`http://localhost:3001/api/v1/sessions/${{user_id: user?.id}}`, { withCredentials: true }
       ).then(response => {
-        !!handleLogout && handleLogout()
+        !!handleUnsuccessfulAuthentication && handleUnsuccessfulAuthentication()
         console.log("ログアウト", response)
       }).catch(error => console.log("ログアウトエラー", error))
   }

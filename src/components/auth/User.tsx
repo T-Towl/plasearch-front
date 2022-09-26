@@ -1,6 +1,5 @@
 import React, { useContext, createContext } from "react"
 import { useNavigate } from "react-router-dom"
-import axios from 'axios'
 
 import { LoggedInStatusContext, HandleLoginContext, HandleLogoutContext, UserContext } from '../../App'
 import Registration from './Registration'

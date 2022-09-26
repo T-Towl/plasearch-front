@@ -18,13 +18,13 @@ function Header() {
   const handleLogout = useContext(HandleLogoutContext)
   const user = useContext(UserContext)
 
-  const handleLogoutClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user?.id}}`, { withCredentials: true }
-      ).then(response => {
-        !!handleLogout && handleLogout()
-        console.log("ログアウト", response)
-      }).catch(error => console.log("ログアウトエラー", error))
-  }
+  // const handleLogoutClick = () => {
+  //   axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user?.id}}`, { withCredentials: true }
+  //     ).then(response => {
+  //       !!handleLogout && handleLogout()
+  //       console.log("ログアウト", response)
+  //     }).catch(error => console.log("ログアウトエラー", error))
+  // }
 
   return (
     <>

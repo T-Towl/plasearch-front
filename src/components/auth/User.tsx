@@ -1,7 +1,7 @@
 import React, { useContext, createContext } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { LoggedInStatusContext, HandleLoginContext, HandleLogoutContext, UserContext } from '../../App'
+import { LoggedInStatusContext, HandleLoginContext, HandleLogoutContext } from '../../App'
 import Registration from './Registration'
 import Login from './Login'
 import Logout from './Logout'

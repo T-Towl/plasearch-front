@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
-// import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import axios from "axios";
 import { LoggedInStatusContext, UserContext } from '../../App'
@@ -15,6 +14,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardHeader from '@mui/material/CardHeader';
 import Collapse from '@mui/material/Collapse';
 import Button from '@mui/material/Button';
+import Stack from "@mui/material/Stack";
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
@@ -55,28 +55,31 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 function ShopDetail() {
 
+  const navigation = useNavigate();
   const loggedInStatus = useContext(LoggedInStatusContext)
   const user = useContext(UserContext)
 
   // params id を受け取る
   const { id } = useParams();
 
-  const defaultFavoriteData = {
-    id: 0,
-    user_id: 0,
-    shop_id: 0
+  // お気に入りデータ定義
+  type FavoriteData = {
+    id: number
+    user_id: number
+    shop_id: number
   }
-  const [favoriteData, setFavoriteData] = useState(defaultFavoriteData)
+  const [favoriteData, setFavoriteData] = useState<FavoriteData | undefined>(undefined)
 
   // お気に入り登録機能
   const handleFavoriteClick = () => {
-    axios.post(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites`, { user_id: user.id, shop_id: id })
+    axios.post(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites`, 
+              {shop_id: id}, {withCredentials: true})
         .then(res => {
-          console.log("お気に入り登録", res.data)
-          if (res.data.favorited) {
+          console.log("お気に入り登録", res)
+          if (res.status === 201) {
             setFavoriteData(res.data.favorite)
           } else {
-          console.log("お気に入り登録失敗", res.data.status)
+          console.log("お気に入り登録失敗", res)
           }
         })
         .catch(error => console.log("エラー", error))
@@ -84,13 +87,14 @@ function ShopDetail() {
 
   // お気に入り削除機能
   const handleDeleteFavoriteClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites/${{favorite_id: favoriteData.id}}`, {params: {favorite_id: favoriteData.id}})
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/favorites/${favoriteData?.id}`,
+                {withCredentials: true})
         .then(res => {
-          if (res.data.deleted) {
-            console.log("お気に入り削除", res.data)
-            setFavoriteData(defaultFavoriteData)
+          if (res.status === 204) {
+            console.log("お気に入り削除", res)
+            setFavoriteData(undefined)
           } else {
-          console.log("お気に入り削除失敗", res.data.errors)
+          console.log("お気に入り削除失敗", res)
           }
         })
         .catch(error => console.log("エラー", error))
@@ -120,18 +124,18 @@ function ShopDetail() {
 
   // Railsからparams id と同じidのデータを取得
   useEffect(() => {
-    console.log("ユーザーID", user.id)
-    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops/${id}`, {params: { user_id: user.id, shop_id: id}})
+    console.log("ユーザーID", user?.id)
+    axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops/${id}`, {withCredentials: true})
       .then(res => {
         setShop(res.data.shop)
-        if (res.data.favorited) {
+        if (res.status === 200) {
           !!res.data.favorite && setFavoriteData(res.data.favorite)
         }
-        console.log("Rails Api からデータを取得", res.data);
+        console.log("Rails Api からshopデータを取得", res);
       })
       .catch(error => console.log("データの取得に失敗", error))
-    console.log("お気に入り情報", favoriteData.id)
-  },[favoriteData.id, id, user.id])
+    console.log("お気に入り情報", favoriteData?.id)
+  },[favoriteData?.id, id, user?.id])
 
   // <InfoWindow詳細設定>
   const [size, setSize] = useState<google.maps.Size>();
@@ -200,6 +204,19 @@ function ShopDetail() {
 
   return (
     <>
+    <Container sx={{ py: 2 }}>
+        <Stack
+              sx={{ pt: 1 }}
+              direction="row"
+              spacing={2}
+              justifyContent="left"
+        >
+          <Button variant="contained" onClick={ () => navigation(-1) }>
+            戻る
+          </Button>
+        </Stack>
+      </Container>
+      
       <Container sx={{ py: 8 }} maxWidth="md">
         <Grid container 
           spacing={4} 
@@ -228,9 +245,9 @@ function ShopDetail() {
                     <>
                       <IconButton 
                         aria-label="settings"
-                        onClick={favoriteData.id === defaultFavoriteData.id ? handleFavoriteClick : handleDeleteFavoriteClick}
+                        onClick={favoriteData?.id === undefined ? handleFavoriteClick : handleDeleteFavoriteClick}
                       >
-                        <StarIcon color={favoriteData.id === defaultFavoriteData.id ? 'inherit' : 'primary'} />
+                        <StarIcon color={favoriteData?.id === undefined ? 'inherit' : 'primary'} />
                       </IconButton>
                     </>
                   } 

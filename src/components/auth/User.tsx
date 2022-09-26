@@ -1,13 +1,19 @@
-import React, { useContext, createContext } from "react";
+import React, { useContext, createContext } from "react"
+import { useNavigate } from "react-router-dom"
 import axios from 'axios'
+
 import { LoggedInStatusContext, HandleLoginContext, HandleLogoutContext, UserContext } from '../../App'
 import Registration from './Registration'
 import Login from './Login'
+import Logout from './Logout'
 
-import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
+import CssBaseline from '@mui/material/CssBaseline';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export const HandleSuccessfulAuthentication = createContext<((data: any) => void) | undefined>(undefined);
+export const HandleUnsuccessfulAuthentication = createContext<(() => void) | undefined>(undefined);
 
 function User() {
     const navigation = useNavigate();
@@ -20,17 +26,16 @@ function User() {
       !!handleLogin && handleLogin(data)
       navigation("/user")
     }
-
-    const handleLogoutClick = () => {
-      axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user.id}}`, { withCredentials: true }
-        ).then(response => {
-          !!handleLogout && handleLogout()
-        }).catch(error => console.log("ログアウトエラー", error))
+    const handleUnsuccessfulAuthentication = () => {
+      !!handleLogout && handleLogout()
+      navigation("/user")
     }
+
+    const theme = createTheme();
 
     return (
       <>
-        <h2>ログイン状態: {loggedInStatus}</h2>
+        {/* <h2>ログイン状態: {loggedInStatus}</h2>
 
         {loggedInStatus === "未ログイン" ?
           <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
@@ -44,7 +49,38 @@ function User() {
           >
             ログアウト
           </Button>
-        }
+        } */}
+        <ThemeProvider theme={theme}>
+          <Grid container component="main" sx={{ height: '100vh' }}>
+            <CssBaseline />
+            <Grid
+              item
+              xs={false}
+              sm={4}
+              md={7}
+              sx={{
+                backgroundImage: 'url(https://source.unsplash.com/random)',
+                backgroundRepeat: 'no-repeat',
+                backgroundColor: (t) =>
+                  t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            {loggedInStatus === "未ログイン" ?
+              <HandleSuccessfulAuthentication.Provider value={handleSuccessfulAuthentication}>
+                <Login />
+                <Registration  />
+              </HandleSuccessfulAuthentication.Provider>
+            :
+              <HandleUnsuccessfulAuthentication.Provider value={handleUnsuccessfulAuthentication}>
+                <Logout />
+              </HandleUnsuccessfulAuthentication.Provider>
+            }
+            </Grid>
+          </Grid>
+        </ThemeProvider>
       </>
     );
   }

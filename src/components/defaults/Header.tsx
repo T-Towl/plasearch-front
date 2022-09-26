@@ -11,9 +11,6 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import HomeIcon from '@mui/icons-material/Home';
-// import MenuIcon from "@mui/icons-material/Menu";
-// import SearchIcon from "@mui/icons-material/Search";
-// import Link from "@mui/material/Link";
 
 function Header() {
 
@@ -22,14 +19,15 @@ function Header() {
   const user = useContext(UserContext)
 
   const handleLogoutClick = () => {
-    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user.id}}`, { withCredentials: true }
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user?.id}}`, { withCredentials: true }
       ).then(response => {
         !!handleLogout && handleLogout()
+        console.log("ログアウト", response)
       }).catch(error => console.log("ログアウトエラー", error))
   }
 
   return (
-    <div>
+    <>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
@@ -77,17 +75,17 @@ function Header() {
               <Typography color="inherit" sx={{ mr: 1 }}>
                 Login User：{loggedInStatus}
               </Typography>
-              <Button onClick={handleLogoutClick} 
+              <Button component={Link} to="/user"
                       variant="outlined" 
                       color="inherit"
               >
-                ログアウト
+                Sign out
               </Button>
             </>  
           }
         </Toolbar>
       </AppBar>
-    </div>
+    </>
   );
 }
 

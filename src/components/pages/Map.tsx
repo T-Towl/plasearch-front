@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   GoogleMap,
@@ -8,6 +9,7 @@ import {
 } from "@react-google-maps/api";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 // import { Shop } from "@mui/icons-material";
 
 const containerStyle = {
@@ -135,55 +137,67 @@ function Map() {
   if (isFirstRef.current) return <div className="App">Loading...</div>;
 
   return (
-    <Container sx={{ py: 4 }} maxWidth="md">
-      <LoadScript
-        googleMapsApiKey={process.env.REACT_APP_API_KEY || ""}
-        onLoad={() => createOffsetSize()}
-      >
-        {!isFirstRef && !isAvailable && <ErrorText />}
-        <GoogleMap 
-          mapContainerStyle={containerStyle}  
-          center={position} 
-          onLoad={onMapLoad}
-          onBoundsChanged={onMapBoundsChanged}
-          zoom={13}
-        >
-          <Marker position={centerBounds} />
-          {/* Railsから取得したデータを、Marker地図上に表示 */}
-          {nearbyShops.map((nearbyShop, index) => (
-            <>
-              <Marker 
-                position={{ lat: Number(nearbyShop.lat), lng: Number(nearbyShop.lng) }} 
-                key={`marker-${index}`} 
-              />
-              <InfoWindow 
-                position={{ lat: Number(nearbyShop.lat), lng: Number(nearbyShop.lng) }} 
-                options={infoWindowOptions} 
-                key={`info-${index}`}
-              >
-                <div style={divStyle}>
-                  <h1>{nearbyShop.name}</h1>
-                  <p>{nearbyShop.address}</p>
-                  <Button href={`/shopDetail/${nearbyShop.id}`} variant="outlined">
-                    店鋪詳細
-                  </Button>
-                </div>
-              </InfoWindow>
-            </>
-          ))}
-
-        </GoogleMap>
-      </LoadScript>
+    <>
       <Container sx={{ py: 2 }}>
-        <Button onClick={searchNearbyShops} 
-                variant="contained"
-        >
-          周辺のお店を探す
+      <Stack sx={{ pt: 1 }}
+             direction="row"
+             justifyContent="right"
+      >
+        <Button variant="outlined" component={Link} to="/shops">
+          キーワードから探す
         </Button>
+      </Stack>
       </Container>
-      {/* <p>{neBounds?.lat} : {neBounds?.lng}</p>
-      <p>{swBounds?.lat} : {swBounds?.lng}</p> */}
-    </Container>
+      <Container sx={{ py: 4 }} maxWidth="md">
+        <LoadScript
+          googleMapsApiKey={process.env.REACT_APP_API_KEY || ""}
+          onLoad={() => createOffsetSize()}
+        >
+          {!isFirstRef && !isAvailable && <ErrorText />}
+          <GoogleMap 
+            mapContainerStyle={containerStyle}  
+            center={position} 
+            onLoad={onMapLoad}
+            onBoundsChanged={onMapBoundsChanged}
+            zoom={13}
+          >
+            <Marker position={centerBounds} />
+            {/* Railsから取得したデータを、Marker地図上に表示 */}
+            {nearbyShops.map((nearbyShop, index) => (
+              <>
+                <Marker 
+                  position={{ lat: Number(nearbyShop.lat), lng: Number(nearbyShop.lng) }} 
+                  key={`marker-${index}`} 
+                />
+                <InfoWindow 
+                  position={{ lat: Number(nearbyShop.lat), lng: Number(nearbyShop.lng) }} 
+                  options={infoWindowOptions} 
+                  key={`info-${index}`}
+                >
+                  <div style={divStyle}>
+                    <h1>{nearbyShop.name}</h1>
+                    <p>{nearbyShop.address}</p>
+                    <Button href={`/shopDetail/${nearbyShop.id}`} variant="outlined">
+                      店鋪詳細
+                    </Button>
+                  </div>
+                </InfoWindow>
+              </>
+            ))}
+
+          </GoogleMap>
+        </LoadScript>
+        <Container sx={{ py: 2 }}>
+          <Button onClick={searchNearbyShops} 
+                  variant="contained"
+          >
+            周辺のお店を探す
+          </Button>
+        </Container>
+        {/* <p>{neBounds?.lat} : {neBounds?.lng}</p>
+        <p>{swBounds?.lat} : {swBounds?.lng}</p> */}
+      </Container>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Defaults.scss"
-import { LoggedInStatusContext, HandleLogoutContext, UserContext } from '../../App'
+import { LoggedInStatusContext } from '../../App'
 import { Link } from "react-router-dom";
 
 import CssBaseline from "@mui/material/CssBaseline";

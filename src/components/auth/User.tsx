@@ -19,7 +19,7 @@ function User() {
     const loggedInStatus = useContext(LoggedInStatusContext)
     const handleLogin = useContext(HandleLoginContext)
     const handleLogout = useContext(HandleLogoutContext)
-    const user = useContext(UserContext)
+    // const user = useContext(UserContext)
 
     const handleSuccessfulAuthentication = (data: any) => {
       !!handleLogin && handleLogin(data)

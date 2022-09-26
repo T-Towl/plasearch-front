@@ -50,10 +50,8 @@ function Shops() {
   // useEffectが実行されているかどうかを判定するために用意しています
   const isFirstRef = useRef(true);
   
-  /*
-  * ページ描画時にGeolocation APIが使えるかどうかをチェックしています
-  * もし使えなければその旨のエラーメッセージを表示させます
-  */
+  // ページ描画時にGeolocation APIが使えるかどうかをチェックしています
+  // もし使えなければその旨のエラーメッセージを表示させます
   useEffect(() => {
     isFirstRef.current = false;
     axios.get(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/shops`)

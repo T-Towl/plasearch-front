@@ -27,7 +27,7 @@ function User() {
     }
     const handleUnsuccessfulAuthentication = () => {
       !!handleLogout && handleLogout()
-      navigation("/user")
+      // navigation("/user")
     }
 
     const theme = createTheme();

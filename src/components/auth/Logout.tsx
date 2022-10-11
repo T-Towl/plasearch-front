@@ -48,7 +48,7 @@ export default function Logout() {
         <Box component="form" noValidate  sx={{ mt: 1 }}>
           <Button
             onClick={handleSubmit}
-            type="submit"
+            // type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

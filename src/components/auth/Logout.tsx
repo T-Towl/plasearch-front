@@ -21,7 +21,7 @@ export default function Logout() {
   //     }).catch(error => console.log("ログアウトエラー", error))
   // }
   const handleSubmit = () => {
-    axios.delete(`http://localhost:3001/api/v1/sessions/${{user_id: user?.id}}`, { withCredentials: true }
+    axios.delete(`${process.env.REACT_APP_BACK_ORIGIN}/api/v1/sessions/${{user_id: user?.id}}`, { withCredentials: true }
       ).then(response => {
         !!handleUnsuccessfulAuthentication && handleUnsuccessfulAuthentication()
         console.log("ログアウト", response)

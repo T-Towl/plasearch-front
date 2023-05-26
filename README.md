@@ -1,46 +1,44 @@
-# Getting Started with Create React App
+### 使用言語
+TypeScript
+React
+Material Ui
+### API
+Google Map API（Map検索に使用）
+Google Place API（開発環境でのみ店舗情報の取得に使用）
+Geolocation API（現在地の取得に使用）
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# アプリケーション名
 
-## Available Scripts
+Plasearch -プラサーチ-
 
-In the project directory, you can run:
+### アプリケーション概要
 
-### `npm start`
+ガンプラを販売しているお店を、検索できるアプリケーションです。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### URL
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+https://clever-bubblegum-6b0de2.netlify.app
 
-### `npm test`
+### テスト用アカウント
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+メールアドレス：a@a.com
+パスワード：aaaaaa
 
-### `npm run build`
+### 利用方法
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+「マップから探す」or「キーワードから探す」から店舗検索
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### マップから探す
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+マップから探すページにいくと、現在地を自動で取得できるようになっている。
+探したいエリアへマーカーを移動させ、店舗検索ボタンをクリックするとエリア内のカンプラ販売店がヒットします。
 
-### `npm run eject`
+#### キーワードから探す
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+キーワードから探すページのキーワード入力欄に、住所（一部でも可）などを入力し、検索ボタンをクリックすると、キーワードを含む店舗が表示されます。
+各店舗をクリックすると、詳細画面へ進むことができます。
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### 目指した課題解決
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+昨今の巣篭もり需要でガンプラが品薄状態になり、いつも買っていたお店にガンプラが売っていないという事案が多発しました。
+そこで、その課題を解決するために、ガンプラにフォーカスした検索サービスを制作しました。
